@@ -1,0 +1,15 @@
+#ifndef CONFIG_HPP_INCLUDED_1751562349108179888
+#define CONFIG_HPP_INCLUDED_1751562349108179888 1
+
+namespace FunctionUtility
+{
+  namespace Config
+  {
+    constexpr int major_version = ${FUNCTION_UTILITY_MAJOR};
+    constexpr int minor_version = ${FUNCTION_UTILITY_MINOR};
+    constexpr int update = ${FUNCTON_UTILITY_UPDATE};
+    
+  } // end of namespace Config
+} // end of namespace FunctionUtility
+
+#endif // !defined CONFIG_HPP_INCLUDED_1751562349108179888
