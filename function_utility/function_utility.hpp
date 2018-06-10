@@ -14,6 +14,10 @@ namespace FunctionUtility
   /** Multiple values */
   using Core::values;
 
+  /** Duplicate the first argument */
+  using Core::dup;
+  
+
   /** Sequential composition of functions */
   using Core::compose;
 
