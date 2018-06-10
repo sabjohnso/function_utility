@@ -5,6 +5,7 @@
 // ... Function Utility header files
 //
 #include <function_utility/values.hpp>
+#include <function_utility/identity.hpp>
 #include <function_utility/composite.hpp>
 
 
@@ -14,6 +15,10 @@ namespace FunctionUtility
   /** Multiple values */
   using Core::values;
 
+
+  /** Identity function */
+  using Core::identity;
+  
   /** Duplicate the first argument */
   using Core::dup;
   
