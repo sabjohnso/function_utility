@@ -30,6 +30,12 @@ namespace FunctionUtility
   /** Fanout */
   using Core::fanout;
 
+  /** Apply to first argument */
+  using Core::first;
+
+  /** Apply to second argument */
+  using Core::second;
+
   /** Partial application */
   using Core::part;
 

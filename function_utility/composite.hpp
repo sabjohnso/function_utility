@@ -79,6 +79,15 @@ namespace FunctionUtility
 		      values( apply( forward<G>( g ),
 				     move( xs ))));
       }
+
+      template< typename F, typename G, typename ... Ts >
+      static constexpr auto
+      exec( F&& f, G&& g, const Values<Ts... >& xs ){
+	return apply( forward<F>( f ),
+		      values( apply( forward<G>( g ),
+				     xs )));
+      }
+      
     }; // end of class After
 
 
@@ -226,6 +235,16 @@ namespace FunctionUtility
 	return pcompose( forward<F>( f ), identity );
       }
     } first{}; // end of class First
+
+    constexpr
+    class Second{
+    public:
+      template< typename F >
+      constexpr auto
+      operator ()( F&& f ) const & {
+	return pcompose( identity, forward<F>( f ));
+      }
+    } second{};
 
 
 

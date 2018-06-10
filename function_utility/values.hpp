@@ -169,26 +169,11 @@ namespace FunctionUtility
     constexpr
     class Dup{
     public:
-      template< typename ... Ts  >
+      template< typename T >
       constexpr auto
-      operator ()( Ts&& ... xs ) const & {
-	return aux( values( forward<Ts>( xs ) ... ));
+      operator ()( T&& x ) const & {
+	return values( x, x );
       }
-
-    private:
-
-      template<typename ... Ts >
-      static constexpr auto
-      aux(  Values<Ts...>&& xs ){
-	return aux2( head( xs ), tail( xs ));
-      }
-      
-      template< typename T, typename ... Ts >
-      static constexpr auto
-      aux2( Values<T>&& x, Values<Ts...>&& xs ){
-	return values( values( x ), values( x ), move( xs ));
-      }
-
     } dup{};
 
     constexpr auto

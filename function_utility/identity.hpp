@@ -11,7 +11,7 @@ namespace FunctionUtility
     
     constexpr
     class Identity{
-
+    public:
       
       template< typename T >
       constexpr auto
