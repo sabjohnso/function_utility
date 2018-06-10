@@ -15,7 +15,9 @@ namespace FunctionUtility
       
       template< typename T >
       constexpr auto
-      operator ()( T&& x ){ return forward<T>( x ); } // end of operator()
+      operator ()( T&& x ) const & {
+	return forward<T>( x );
+      } // end of operator()
 
       
       template< typename Stream >
