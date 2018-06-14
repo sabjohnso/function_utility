@@ -8,6 +8,7 @@
 #include <function_utility/identity.hpp>
 #include <function_utility/composite.hpp>
 #include <function_utility/curry.hpp>
+#include <function_utility/static_application.hpp>
 
 
 namespace FunctionUtility
@@ -50,6 +51,10 @@ namespace FunctionUtility
 
 
   using Core::curry;
+
+
+  /** CRTP base class for deriving the function call operator */
+  using Core::Static_callable;
 
   
   
