@@ -6,3 +6,4 @@ endmacro( function_utility_add_simple_test  name )
 
 function_utility_add_simple_test( values )
 function_utility_add_simple_test( composite )
+function_utility_add_simple_test( curry )

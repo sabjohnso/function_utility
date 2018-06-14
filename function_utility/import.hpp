@@ -32,6 +32,7 @@ namespace FunctionUtility
     using TypeUtility::Type;
     using TypeUtility::Type1;
     using TypeUtility::generate_indices;
+    using TypeUtility::Value;
     
     
   } // end of namespace Core

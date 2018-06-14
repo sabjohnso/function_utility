@@ -124,7 +124,7 @@ namespace FunctionUtility
     public:
       template< typename F, typename T, typename ... Ts >
       static constexpr auto
-      exect( F&& f, T&& x, Values<Ts...>&& xs ){
+      exec( F&& f, T&& x, Values<Ts...>&& xs ){
 	return apply( forward<F>( f ), values( values( forward<T>( x )), move( xs )));
       }
       

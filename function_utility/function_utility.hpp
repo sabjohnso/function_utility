@@ -7,6 +7,7 @@
 #include <function_utility/values.hpp>
 #include <function_utility/identity.hpp>
 #include <function_utility/composite.hpp>
+#include <function_utility/curry.hpp>
 
 
 namespace FunctionUtility
@@ -46,6 +47,9 @@ namespace FunctionUtility
 
   /** Rright partial application */
   using Core::rpart;
+
+
+  using Core::curry;
 
   
   
