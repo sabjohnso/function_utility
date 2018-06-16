@@ -45,6 +45,7 @@ namespace FunctionUtility
     using TypeUtility::Nat;
     using TypeUtility::take;
     using TypeUtility::drop;
+    using TypeUtility::length;
     
     
     

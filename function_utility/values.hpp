@@ -23,6 +23,18 @@ namespace FunctionUtility
 
     private:
 
+      template<  typename ... Us, size_t ... indices, typename T >
+      static constexpr auto
+      select( Type_sequence<Us...>,
+	      index_sequence<indices...>,
+	      T&& xs ){
+	static_assert( 
+	  count_types<Us...>() == count_types<decltype(indices) ...>(),
+	  "Expected equal number of types and indices" );
+	return Values<Us...>( get<indices>( forward<T>( xs )) ... );
+      }
+
+
       template< size_t index >
       friend constexpr auto
       get( Values&& xs ){
@@ -94,17 +106,17 @@ namespace FunctionUtility
       friend constexpr auto
       take( Values&& xs, Nat<N>){
 	return select(
+	  take( types<Ts...>, nat<N> ),
 	  generate_indices<N>(),
-	  take( generate_indices<Ts...>(), nat<N> ),
 	  move( xs ));
       }
 
       template< size_t N >
       friend constexpr auto
       take( const Values& xs, Nat<N> ){
-	return select( 
-	  generate_indices<N>(),
+	return select(
 	  take( types<Ts...>, nat<N> ),
+	  generate_indices<N>(),	  
 	  xs );
       }
 
@@ -113,28 +125,58 @@ namespace FunctionUtility
       template< size_t N >
       friend constexpr auto
       drop( Values&& xs, Nat<N> ){
+	static_assert( N <= count_types<Ts...>(), "Expected sufficient types" );
+	static_assert(
+	  length( drop( types<Ts...>, nat<N> )) ==
+	  length( drop( generate_indices<Ts...>(), nat<N> )));			       
 	return select(
-	  drop( generate_indices<Ts...>(), nat<N> ),
+	  drop( types<Ts...>, nat<N> ),
 	  drop( generate_indices<Ts...>(), nat<N> ),
 	  move( xs ));
       }
 
+      
       template< size_t N >
       friend constexpr auto
       drop( const Values& xs, Nat<N>){
+	static_assert( N <= count_types<Ts...>(), "Expected sufficient types" );
+	static_assert( 
+	  length( drop( types<Ts...>, nat<N> )) ==
+	  length( drop( generate_indices<Ts...>(), nat<N> )));
 	return select(
-	  drop( generate_indices<Ts...>(), nat<N> ),
+	  drop( types<Ts...>, nat<N> ),
 	  drop( generate_indices<Ts...>(), nat<N> ),
 	  xs );
       }
 
-      template<  typename ... Us, size_t ... indices, typename T >
-      static constexpr auto
-      select( Type_sequence<Us...>,
-	      index_sequence<indices...>,
-	      T&& xs ){
-	return Values<Us...>( get<indices>( forward<T>( xs )) ... );
+      template< size_t index, typename Stream >
+      static Stream&
+      print_values( index_sequence<>, Stream& os, const Values& xs ){
+	return os;
       }
+
+      template< size_t index, typename Stream >
+      static Stream&
+      print_values( index_sequence<index>, Stream& os, const Values& xs ){
+	os << get<index>( xs );
+	return os;
+      }
+
+      template< size_t index0, size_t index1,  size_t ... indices, typename Stream >
+      static Stream&
+      print_values( index_sequence<index0,index1,indices...>, Stream& os, const Values& xs ){
+	os << get<index0>( xs ) << ',';
+	return print_values( index_sequence<index1,indices...>(), os, xs );
+      }
+
+
+      template< typename Stream >
+      friend Stream&
+      operator <<( Stream& os, const Values& xs ){
+	print_values( generate_indices<Ts...>(), os,  xs );
+	return os;
+      }
+
 
 
     }; // end of class Values

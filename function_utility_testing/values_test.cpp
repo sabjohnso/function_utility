@@ -88,6 +88,12 @@ struct Values_test
     FUNCTION_UTILITY_TEST( accum, get<0>( head( values( 1, 2, 3, 4 ))) == 1 );
     FUNCTION_UTILITY_TEST( accum, get<0>( tail( values( 1, 2, 3, 4 ))) == 2 );
     FUNCTION_UTILITY_TEST( accum, get<0>( tail( tail( values( 1, 2, 3, 4 )))) == 3 );
+
+
+
+
+    std::cout << values( 1, 2, 3 ) << std::endl;
+    std::cout << drop( values(1, 2, 3 ), nat<1> ) << std::endl; 
     
   }
   

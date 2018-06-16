@@ -9,6 +9,7 @@
 #include <function_utility/composite.hpp>
 #include <function_utility/curry.hpp>
 #include <function_utility/static_application.hpp>
+#include <function_utility/power.hpp>
 
 
 namespace FunctionUtility
@@ -48,6 +49,9 @@ namespace FunctionUtility
 
   /** Rright partial application */
   using Core::rpart;
+
+  
+  using Core::powerfunc;
 
 
   using Core::curry;

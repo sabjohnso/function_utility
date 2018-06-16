@@ -14,8 +14,8 @@
 #define FUNCTION_UTILITY_FAIL( accum, ... )				\
   {									\
     ++accum;								\
-    std::cout << __FILE__ << ':' << __LINE__ << ":0"			\
-	      << "FUNCTION_UTILITY test failure\n"			\
+    std::cout << "\n" <<__FILE__ << ':' << __LINE__ << ":0"		\
+	      << " FUNCTION_UTILITY test failure\n"			\
 	      << FUNCTION_UTILITY_TEST_PRINT( __VA_ARGS__ ) << '\n'	\
 	      << "did not evaluate to true.\n\n";			\
   }

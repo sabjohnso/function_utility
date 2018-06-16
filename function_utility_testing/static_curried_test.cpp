@@ -1,7 +1,7 @@
 //
 // ... Function Utility header files
 //
-#include <function_utility/curry.hpp>
+#include <function_utility/static_application.hpp>
 
 
 //
@@ -31,7 +31,6 @@ struct Static_curried_test
     FUNCTION_UTILITY_STATIC_TEST( axpy( 2, 3 )( 4 ) == 10 );
     FUNCTION_UTILITY_STATIC_TEST( axpy( 2 )( 3, 4 ) == 10 );
     FUNCTION_UTILITY_STATIC_TEST( axpy( 2 )( 3 )( 4 ) == 10 );
-
   }
   operator int() const { return accum; }
   int accum;

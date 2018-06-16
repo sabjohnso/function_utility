@@ -9,6 +9,7 @@
 #include <function_utility/identity.hpp>
 
 
+
 namespace FunctionUtility
 {
   namespace Core
@@ -59,6 +60,12 @@ namespace FunctionUtility
       }
       
     }; // end of class Composite
+
+
+   
+
+
+    
 
 
     template< typename Stream >
@@ -139,6 +146,11 @@ namespace FunctionUtility
 	return apply( forward<F>( f ), values( move( xs ), values( forward<T>( x ))));
       }
     };
+
+
+    
+
+
 
 
     
