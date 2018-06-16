@@ -25,6 +25,7 @@ namespace FunctionUtility
     using std::move;
     using std::get;
     using std::index_sequence;
+    using std::conditional_t;
     using std::decay_t;
     using std::tuple;
 
@@ -34,6 +35,16 @@ namespace FunctionUtility
     using TypeUtility::generate_indices;
     using TypeUtility::CRTP;
     using TypeUtility::Value;
+    using TypeUtility::Nat;
+    using TypeUtility::nat;
+    using TypeUtility::Type_sequence;
+    using TypeUtility::types;
+
+    using TypeUtility::count_types;
+
+    using TypeUtility::take;
+    using TypeUtility::drop;
+    
     
     
   } // end of namespace Core

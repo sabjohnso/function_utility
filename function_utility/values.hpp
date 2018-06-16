@@ -89,8 +89,53 @@ namespace FunctionUtility
 	  move( ys ));
       }
 
-    }; // end of function values
 
+      template< size_t N >
+      friend constexpr auto
+      take( Values&& xs, Nat<N>){
+	return select(
+	  generate_indices<N>(),
+	  take( generate_indices<Ts...>(), nat<N> ),
+	  move( xs ));
+      }
+
+      template< size_t N >
+      friend constexpr auto
+      take( const Values& xs, Nat<N>){
+	return select( generate_indices<N>(), take( types<Ts...>, nat<N> ), xs );
+      }
+
+
+
+      template< size_t N >
+      friend constexpr auto
+      drop( Values&& xs, Nat<N> ){
+	return select(
+	  drop( generate_indices<Ts...>(), nat<N> ),
+	  drop( generate_indices<Ts...>(), nat<N> ),
+	  move( xs ));
+      }
+
+      template< size_t N >
+      friend constexpr auto
+      drop( const Values& xs, Nat<N>){
+	return select(
+	  drop( generate_indices<Ts...>(), nat<N> ),
+	  drop( generate_indices<Ts...>(), nat<N> ),
+	  xs );
+      }
+
+      template<  typename ... Us, size_t ... indices, typename T >
+      static constexpr auto
+      select( Type_sequence<Us...>,
+	      index_sequence<indices...>,
+	      T&& xs ){
+	return Values<Us...>( get<indices>( forward<T>( xs )) ... );
+      }
+
+
+    }; // end of class Values
+    
     
 
     constexpr auto
@@ -164,6 +209,15 @@ namespace FunctionUtility
     tail( const Values<Ts...>& xs ){
       return tail_aux( generate_indices<Ts...>(), xs );
     }
+
+
+
+
+
+
+
+
+    
 
     
     constexpr
