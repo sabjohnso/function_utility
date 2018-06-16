@@ -42,6 +42,7 @@ namespace FunctionUtility
 
     using TypeUtility::count_types;
 
+    using TypeUtility::Nat;
     using TypeUtility::take;
     using TypeUtility::drop;
     

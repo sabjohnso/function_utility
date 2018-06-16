@@ -101,8 +101,11 @@ namespace FunctionUtility
 
       template< size_t N >
       friend constexpr auto
-      take( const Values& xs, Nat<N>){
-	return select( generate_indices<N>(), take( types<Ts...>, nat<N> ), xs );
+      take( const Values& xs, Nat<N> ){
+	return select( 
+	  generate_indices<N>(),
+	  take( types<Ts...>, nat<N> ),
+	  xs );
       }
 
 

@@ -5,6 +5,8 @@
 // ... Function Utility header files
 //
 #include <function_utility/import.hpp>
+#include <function_utility/values.hpp>
+#include <function_utility/composite.hpp>
 
 
 namespace FunctionUtility
@@ -110,7 +112,7 @@ namespace FunctionUtility
       constexpr auto
       operator()( Ts&& ... xs ) const & {
 	return aux( conditional_t<( count_types<Ts...>() == N ), equal_tag,
-		    conditional_t< N < count_types<Ts...>(), less_tag, more_tag >>(),
+		    conditional_t< (N > count_types<Ts...>()), less_tag, more_tag >>(),
 		    forward<Ts>( xs ) ... );
       }
     private:
@@ -135,12 +137,12 @@ namespace FunctionUtility
       template< typename T >
       constexpr auto
       aux2( T&& xs ) const & {
-	return apply( apply( *this )( take<N>( xs )),
-		      drop<N>( xs ));
+	return apply( apply( *this, take( xs, nat<N> )),
+		      drop( xs, nat<N>));
       }
       
       
-    };
+    }; // end of class static curried
     
 
 

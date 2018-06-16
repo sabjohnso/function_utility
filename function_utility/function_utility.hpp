@@ -56,6 +56,9 @@ namespace FunctionUtility
   /** CRTP base class for deriving the function call operator */
   using Core::Static_callable;
 
+  /** CRTP base class for curried static function call operator */
+  using Core::Static_curried;
+
   
   
 } // end of namespace FunctionUtility
