@@ -8,7 +8,7 @@
 #include <function_utility/curry.hpp>
 #include <function_utility/values.hpp>
 
-#include <iostream>
+
 
 namespace FunctionUtility
 {
@@ -81,7 +81,6 @@ namespace FunctionUtility
       template< typename T >
       constexpr auto
       aux2( T&& xs ) const & {
-	std::cout << xs  << std::endl;
 	return apply( apply( *this, take( forward<T>( xs ), nat<N> )),
 		      drop( forward<T>( xs ), nat<N>));
       }

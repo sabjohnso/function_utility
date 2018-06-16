@@ -20,7 +20,7 @@ struct Sqr
 {
   template< typename T >
   constexpr auto
-  operator()( T&& x ){ return x*x; }
+  operator()( T&& x ) const &{ return x*x; }
 
   template< typename Stream >
   friend Stream&
@@ -41,7 +41,7 @@ struct Powerfunc_test
     FUNCTION_UTILITY_STATIC_TEST( powerfunc( sqr, nat<2> )( 3 ) == 81 );
     FUNCTION_UTILITY_TEST( accum, powerfunc( sqr, nat<2> )( 3 ) == 81 );
 
-    std::cout << std::endl << powerfunc( sqr, nat<2>, 3 ) << std::endl;
+    FUNCTION_UTILITY_STATIC_TEST( powerfunc( sqr, nat<2>, 3 ) == 81 ); 
     FUNCTION_UTILITY_TEST( accum, powerfunc( sqr, nat<2>, 3 ) == 81 );
       
   }
