@@ -9,7 +9,9 @@
 #include <function_utility/composite.hpp>
 #include <function_utility/curry.hpp>
 #include <function_utility/static_application.hpp>
+#include <function_utility/static_curried.hpp>
 #include <function_utility/power.hpp>
+#include <function_utility/nsplit.hpp>
 
 
 namespace FunctionUtility
@@ -57,11 +59,18 @@ namespace FunctionUtility
   using Core::curry;
 
 
+  using Core::partition;
+
+
   /** CRTP base class for deriving the function call operator */
   using Core::Static_callable;
 
   /** CRTP base class for curried static function call operator */
   using Core::Static_curried;
+
+
+
+  
 
   
   

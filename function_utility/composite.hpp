@@ -7,6 +7,7 @@
 #include <function_utility/import.hpp>
 #include <function_utility/values.hpp>
 #include <function_utility/identity.hpp>
+#include <function_utility/static_application.hpp>
 
 
 
@@ -99,7 +100,7 @@ namespace FunctionUtility
 
 
 
-
+    
     class Split
     {
     public:
@@ -110,9 +111,22 @@ namespace FunctionUtility
 	return values( apply( forward<F>( f ), head( move( xs ))),
 		       apply( forward<G>( g ), tail( move( xs ))));
       }
+
+      template< typename F, typename G, typename ... Ts >
+      static constexpr auto
+      exec( F&& f, G&& g, const Values<Ts...>& xs ){
+	return values( apply( forward<F>( f ), head( xs )),
+		       apply( forward<G>( g ), tail( xs )));
+      }
     }; // end of class Split
 
 
+
+
+
+    /**
+     * @brief Execution model for generalized
+     */
     class Generalized
     {
     public:
@@ -126,6 +140,10 @@ namespace FunctionUtility
     }; // end of class Generalized
 
 
+    
+    /**
+     * @brief Execution model for Partial application. 
+     */
     class Partial
     {
     public:
@@ -137,6 +155,9 @@ namespace FunctionUtility
       
     };
 
+    /**
+     * @brief Execution model for right partial application. 
+     */
     class RightPartial
     {
     public:
@@ -148,31 +169,31 @@ namespace FunctionUtility
     };
 
 
-    
-
-
-
-
-    
+    /** 
+     * @brief Function composition
+     *
+     * @details
+     *
+     */
     constexpr
-    class Compose
+    class Compose : public  Static_callable<Compose>
     {
     public:
       template< typename F, typename G >
-      constexpr auto
-      operator ()( F&& f, G&& g ) const & {
+      static constexpr auto
+      call( F&& f, G&& g ){
 	return Composite<After, decay_t<F>, decay_t<G>>(
 	  forward<F>( f ),
 	  forward<G>( g ));
       }
 
       template< typename F, typename G, typename H, typename ... Is >
-      constexpr auto
-      operator ()( F&& f, G&& g, H&& h, Is&& ... is ) const & {
-	return (*this)( forward<F>( f ),
-			(*this)( forward<G>( g ),
-				 forward<H>( h ),
-				 forward<Is>( is ) ... ));
+      static constexpr auto
+      call( F&& f, G&& g, H&& h, Is&& ... is ){
+	return call( forward<F>( f ),
+		     call( forward<G>( g ),
+			   forward<H>( h ),
+			   forward<Is>( is ) ... ));
       }
 
       template< typename Stream >
@@ -185,28 +206,35 @@ namespace FunctionUtility
       
 
     
-    
+    /**
+     * @brief Return a function that applies the
+     * input functions currently over its input 
+     * arguments.
+     *
+     * @details 
+     */
     constexpr
-    class PCompose
+    class PCompose : public Static_callable<PCompose>
     {
     public:
+
       template< typename F, typename G >
-      constexpr auto
-      operator ()( F&& f, G&& g ) const & {
+      static constexpr auto
+      call( F&& f, G&& g ){
 	return Composite<Split,decay_t<F>, decay_t<G>>(
 	  forward<F>( f ),
 	  forward<G>( g ));
-      } // end of operator ()
+      } // end of function call
 
 
       template< typename F, typename G, typename H, typename ... Is >
-      constexpr auto
-      operator ()( F&& f, G&& g, H&& h, Is&& ... is ) const & {
-	return (*this)( forward<F>( f ),
-			(*this)( forward<G>( g ),
-				 forward<H>( h ),
-				 forward<Is>( is ) ... ));
-      } // end of operator ()
+      static constexpr auto
+      call( F&& f, G&& g, H&& h, Is&& ... is ){
+	return call( forward<F>( f ),
+		     call( forward<G>( g ),
+			   forward<H>( h ),
+			   forward<Is>( is ) ... ));
+      } // end of function call
 
 
       template< typename Stream >
@@ -218,26 +246,55 @@ namespace FunctionUtility
     } pcompose{}; // end of class PCompose
 
 
+
+
+    
+    /**
+     * @brief Return a function applies each of the
+     * input funtions to all of the input arguments.
+     *
+     * @details
+     */
     constexpr
-    class Fanout{
+    class Fanout : public Static_callable<Fanout>{
     public:
+
+      
       template< typename F, typename G >
-      constexpr auto
-      operator ()(  F&& f, G&& g ) const & {
+      static constexpr auto
+      call(  F&& f, G&& g ){
 	return compose( pcompose( forward<F>( f ), forward<G>( g )), dup );
       }
 
       template< typename F, typename G, typename H, typename ... Is >
-      constexpr auto
-      operator ()( F&& f, G&& g, H&& h, Is&& ... is ) const & {
-	return (*this)( forward<F>( f ), 
-			(*this)( forward<G>( g ),
-				 forward<H>( h ),
-				 forward<Is>( is ) ... ));
-      }
-    } fanout{};
+      static constexpr auto
+      call( F&& f, G&& g, H&& h, Is&& ... is ){
+	return call( forward<F>( f ), 
+		     call( forward<G>( g ),
+			   forward<H>( h ),
+			   forward<Is>( is ) ... ));
+      } // end of function call
 
 
+      template< typename Stream >
+      friend Stream&
+      operator <<( Stream& os, Fanout ) {
+	os << "FunctionUtility::Core::fanout";
+	return os;
+      }// end of operator <<
+      
+    } fanout{}; // end of class Fanout
+
+
+
+    
+    /**
+     * @brief Return a function that applies the input function
+     * to its first argument and passes the remaining arguments 
+     * unaltered.
+     *
+     * @details
+     */
     constexpr
     class First{
     public:
@@ -248,25 +305,42 @@ namespace FunctionUtility
       }
     } first{}; // end of class First
 
+    /**
+     * @brief Return a function passing the first argument
+     * unaltered and the input function applied to the 
+     * remaining arguments
+     *
+     * @details
+     */
     constexpr
-    class Second{
+    class Rest : public Static_callable<Rest> {
     public:
       template< typename F >
-      constexpr auto
-      operator ()( F&& f ) const & {
+      static constexpr auto
+      call( F&& f ){
 	return pcompose( identity, forward<F>( f ));
       }
-    } second{};
+
+      template< typename Stream >
+      friend Stream&
+      operator <<( Stream& os, Rest ){
+	os << "FunctionUtility::Core::Rest";
+	return os;
+      }
+    } second{}; // end of class Rest
 
 
-
-
+    /**
+     * @brief Generalized application
+     *
+     * @details
+     */
     constexpr
-    class SCompose {
+    class SCompose : public Static_callable<SCompose> {
     public:
       template< typename F, typename G >
-      constexpr auto
-      operator ()( F&& f, G&& g ) const &{
+      static constexpr auto
+      call( F&& f, G&& g ){
 	return Composite<Generalized,decay_t<F>,decay_t<G>>(
 	  forward<F>( f ),
 	  forward<G>( g ));
@@ -274,62 +348,87 @@ namespace FunctionUtility
 
 
       template< typename F, typename G, typename H, typename ... Is >
-      constexpr auto
-      operator ()( F&& f, G&& g, H&& h, Is&& ... is ) const & {
-	return (*this)( forward<F>( f ), 
-			(*this)( forward<G>( g ),
-				 forward<H>( h ),
-				 forward<Is>( is ) ... ));
+      static constexpr auto
+      call( F&& f, G&& g, H&& h, Is&& ... is ){
+	return call( forward<F>( f ), 
+		     call( forward<G>( g ),
+			   forward<H>( h ),
+			   forward<Is>( is ) ... ));
       }
-    } scompose{};
+
+      template< typename Stream >
+      friend Stream& 
+      operator <<( Stream& os, SCompose ){
+	os << "FunctionUtility::Core::scompose";
+	return os;
+      }
+    } scompose{}; // end of class SCompose
 
 
 
+    /**
+     * @brief Partial function application
+     */
     constexpr
-    class Part{
+    class Part : public Static_callable<Part> { 
     public:
       template< typename F, typename T >
-      constexpr auto
-      operator ()( F&& f, T&& x ) const & {
+      static constexpr auto
+      call( F&& f, T&& x ){
 	return Composite<Partial,decay_t<F>,decay_t<T>>(
 	  forward<F>( f ),
 	  forward<T>( x ));
       }
 
       template< typename F, typename T, typename U, typename ... Vs >
-      constexpr auto
-      operator ()( F&& f, T&& x, U&& y, Vs&& ... zs ) const & {
-	return (*this)( (*this)( forward<F>( f ), forward<T>( x )),
-			forward<U>( y ),
-			forward<Vs>( zs ) ... );
+      static constexpr auto
+      call( F&& f, T&& x, U&& y, Vs&& ... zs ){
+	return call( call( forward<F>( f ), forward<T>( x )),
+		     forward<U>( y ),
+		     forward<Vs>( zs ) ... );
+      }
+
+      template< typename Stream >
+      friend Stream& 
+      operator <<( Stream& os, Part ){
+	os << "FunctionUtility::Core::Part";
+	return os;
       }
       
     } part{}; // end of class Part
 
+
+
+    /**
+     * @brief Right partial function application 
+     */
     constexpr
-    class RPart{
+    class RPart : public Static_callable<RPart> {
     public:
+      
       template< typename F, typename T >
-      constexpr auto
-      operator ()( F&& f, T&& x ) const & {
+      static constexpr auto
+      call( F&& f, T&& x ){
 	return Composite<RightPartial,decay_t<F>,decay_t<T>>(
 	  forward<F>( f ),
 	  forward<T>( x ));
       }
 
       template< typename F, typename T, typename U, typename ... Vs >
-      constexpr auto
-      operator ()( F&& f, T&& x, U&& y, Vs&& ... zs ) const {
-	return (*this)( (*this)( forward<F>( f ), forward<U>( y ), forward<Vs>( zs ) ... ),
-			forward<T>( x ));
+      static constexpr auto
+      call( F&& f, T&& x, U&& y, Vs&& ... zs ){
+	return call( call( forward<F>( f ), forward<U>( y ), forward<Vs>( zs ) ... ),
+		     forward<T>( x ));
+      }
+
+      template< typename Stream >
+      friend Stream& 
+      operator <<( Stream& os, RPart ){
+	os << "FunctionUtility::Core::rapart";
+	return os;
       }
       
     } rpart{}; // end of class RPart;
-
-
-    
-
-    
     
   } // end of namespace Core
 } // end of namespace FunctionUtility

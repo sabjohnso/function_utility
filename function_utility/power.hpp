@@ -5,6 +5,7 @@
 // ... Function Utility header files
 //
 #include <function_utility/composite.hpp>
+#include <function_utility/static_curried.hpp>
 
 namespace FunctionUtility
 {

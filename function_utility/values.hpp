@@ -178,127 +178,186 @@ namespace FunctionUtility
       }
 
 
-
-    }; // end of class Values
-    
-    
-
-    constexpr auto
-    values(){ return Values<>(); }
-
-    template< typename ... Ts >
-    constexpr auto
-    values( Values<Ts...>&& xs ){ return move( xs ); }
-
-    template< typename ... Ts >
-    constexpr auto
-    values( const Values<Ts...>& xs ){ return xs; }
-
-    template< typename T >
-    constexpr auto
-    values( T&& x ){ return Values<decay_t<T>>( forward<T>( x )); }
-
-
-    template< typename ... Ts, typename ... Us >
-    constexpr auto
-    values( Values<Ts...>&& xs, Values<Us...>&& ys ){ return append( move( xs ), move( ys )); }
-
-    template< typename T, typename U, typename ... Vs >
-    constexpr auto
-    values( T&& a, U&& b, Vs&& ... cs ){
-      return values(
-	values( values( forward<T>( a )), values( forward<U>( b ))),
-	values( forward<Vs>( cs )) ...  );
-    }
-
-    template< typename ... Ts >
-    constexpr auto
-    head( const Values<Ts...>& xs ){
-      return values( get<0>( xs ));
-    }
+      //
+      // ... apply a function to each value
+      //
+      
+      /** 
+       * @brief Apply a function to each value
+       *
+       * @details This overload of apply_each is a friend to
+       * the Values class accepting a function and and an rvalue 
+       * reference to a Values instance. The result is, an instance of Values,
+       * specialized with the appropiate type parametes, that 
+       * corresponds to applying the input function over each of the 
+       * input values, individually.
+       */
+      template< typename F >
+      friend constexpr auto
+      apply_each( F&& f, Values&& xs ){
+	return apply_each_aux(
+	  types<result_of_t<decay_t<F>(Ts)>...>,
+	  generate_indices<Ts...>(),
+	  forward<F>( f ), move( xs ));
 	
+      }
 
-    template< typename ... Ts >
-    constexpr auto
-    head( Values<Ts...>&& xs ){
-      return values( get<0>( move( xs )));
-    }
+      /** 
+       * @brief Apply a function to each value
+       *
+       * @details This overload of apply_each is a friend to
+       * the Values class accepting a function and and a const
+       * reference to a Values instance. The result is, an instance of Values,
+       * specialized with the appropiate type parametes, that 
+       * corresponds to applying the input function over each of the 
+       * input values, individually.
+       */
+      template< typename F >
+      friend constexpr auto
+      apply_each( F&& f, const Values& xs ){
+	return apply_each_aux(
+	  types<result_of_t<decay_t<F>(Ts)>...>,
+	  generate_indices<Ts...>(),
+	  forward<F>( f ),
+	  xs );	
+      }
+
+      /** 
+       * @brief Apply a function to each value
+       *
+       * @details This static member function provides
+       * auxilliary functionality to the apply_aach
+       * friend function.  This function is private and
+       * not intended as part of the API for the Values class.
+       */
+      template< size_t ... indices, typename F, typename ... Us, typename T >
+      static constexpr auto
+      apply_each_aux( index_sequence<indices...>, Type_sequence<Us...>, F&& f, T&& xs ){
+	return Values<Us...>( f( get<indices>( forward<T>( xs ))) ... );
+      }
 
 
 
-
-    template< size_t index, size_t ... indices, typename ... Ts >
-    constexpr auto
-    tail_aux( index_sequence<index,indices...>, Values< Ts ... >&& xs ){
-      return values( get<indices>( move( xs )) ... );
-    }
-
-    template< typename ... Ts >
-    constexpr auto
-    tail( Values<Ts...>&& xs ){
-      return tail_aux( generate_indices<Ts...>(), move( xs ));
-    }
-
-
-
-
+      }; // end of class Values
     
-    template< size_t index, size_t ... indices, typename ... Ts >
-    constexpr auto
-    tail_aux( index_sequence<index,indices...>, const Values< Ts ... >& xs ){
-      return values( get<indices>( xs ) ... );
-    }
-
-    template< typename ... Ts >
-    constexpr auto
-    tail( const Values<Ts...>& xs ){
-      return tail_aux( generate_indices<Ts...>(), xs );
-    }
-
-
-
-
-
-
-
-
     
 
-    
-    constexpr
-    class Dup{
-    public:
+      constexpr auto
+      values(){ return Values<>(); }
+
+      template< typename ... Ts >
+      constexpr auto
+      values( Values<Ts...>&& xs ){ return move( xs ); }
+
+      template< typename ... Ts >
+      constexpr auto
+      values( const Values<Ts...>& xs ){ return xs; }
+
       template< typename T >
       constexpr auto
-      operator ()( T&& x ) const & {
-	return values( x, x );
+      values( T&& x ){ return Values<decay_t<T>>( forward<T>( x )); }
+
+
+      template< typename ... Ts, typename ... Us >
+      constexpr auto
+      values( Values<Ts...>&& xs, Values<Us...>&& ys ){ return append( move( xs ), move( ys )); }
+
+      template< typename T, typename U, typename ... Vs >
+      constexpr auto
+      values( T&& a, U&& b, Vs&& ... cs ){
+	return values(
+	  values( values( forward<T>( a )), values( forward<U>( b ))),
+	  values( forward<Vs>( cs )) ...  );
       }
-    } dup{};
 
-    constexpr auto
-    operator ==( const Values<>&, const Values<>& ){ return true; }
+      template< typename ... Ts >
+      constexpr auto
+      head( const Values<Ts...>& xs ){
+	return values( get<0>( xs ));
+      }
+	
+
+      template< typename ... Ts >
+      constexpr auto
+      head( Values<Ts...>&& xs ){
+	return values( get<0>( move( xs )));
+      }
+
+
+
+
+      template< size_t index, size_t ... indices, typename ... Ts >
+      constexpr auto
+      tail_aux( index_sequence<index,indices...>, Values< Ts ... >&& xs ){
+	return values( get<indices>( move( xs )) ... );
+      }
+
+      template< typename ... Ts >
+      constexpr auto
+      tail( Values<Ts...>&& xs ){
+	return tail_aux( generate_indices<Ts...>(), move( xs ));
+      }
+
+
+
+
+    
+      template< size_t index, size_t ... indices, typename ... Ts >
+      constexpr auto
+      tail_aux( index_sequence<index,indices...>, const Values< Ts ... >& xs ){
+	return values( get<indices>( xs ) ... );
+      }
+
+      template< typename ... Ts >
+      constexpr auto
+      tail( const Values<Ts...>& xs ){
+	return tail_aux( generate_indices<Ts...>(), xs );
+      }
+
+
+
+
+
+
+
+
+    
+
+    
+      constexpr
+      class Dup{
+      public:
+	template< typename T >
+	constexpr auto
+	operator ()( T&& x ) const & {
+	  return values( x, x );
+	}
+      } dup{};
+
+      constexpr auto
+      operator ==( const Values<>&, const Values<>& ){ return true; }
     
 
 
-    template< typename T, typename U, typename ... Vs >
-    constexpr auto
-    operator ==( const Values<T,U,Vs...>& xs, const Values<T,U,Vs...>& ys ){
-      return head( xs ) == head( ys )
-	? tail( xs ) == tail( ys )
-	: false;
-    }
+      template< typename T, typename U, typename ... Vs >
+      constexpr auto
+      operator ==( const Values<T,U,Vs...>& xs, const Values<T,U,Vs...>& ys ){
+	return head( xs ) == head( ys )
+	  ? tail( xs ) == tail( ys )
+	  : false;
+      }
     
 
 
-    template< typename T>
-    constexpr auto
-    operator ==( const Values<T>& x, const Values<T>& y ){
-      return get<0>( x ) == get<0>( y );
-    }
+      template< typename T>
+      constexpr auto
+      operator ==( const Values<T>& x, const Values<T>& y ){
+	return get<0>( x ) == get<0>( y );
+      }
 
     
     
-  } // end of namespace Core
-} // end of namespace FunctionUtility
+    } // end of namespace Core
+  } // end of namespace FunctionUtility
 
 #endif // !defined VALUES_HPP_INCLUDED_19995948350155737

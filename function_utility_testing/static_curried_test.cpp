@@ -1,7 +1,7 @@
 //
 // ... Function Utility header files
 //
-#include <function_utility/static_application.hpp>
+#include <function_utility/static_curried.hpp>
 
 
 //

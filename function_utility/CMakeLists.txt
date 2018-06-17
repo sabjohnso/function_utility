@@ -8,7 +8,9 @@ install( FILES
   function_utility.hpp
   identity.hpp
   import.hpp
+  nsplit.hpp
   power.hpp
   static_application.hpp
+  static_curried.hpp
   values.hpp
   DESTINATION ${FUNCTION_UTILITY_INSTALL_INCLUDE_DIR})

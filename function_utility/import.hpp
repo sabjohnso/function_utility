@@ -27,6 +27,7 @@ namespace FunctionUtility
     using std::index_sequence;
     using std::conditional_t;
     using std::decay_t;
+    using std::result_of_t;
     using std::tuple;
 
     using TypeUtility::type;
