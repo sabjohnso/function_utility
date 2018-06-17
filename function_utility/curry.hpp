@@ -92,6 +92,10 @@ namespace FunctionUtility
     constexpr auto
     curry( F&& f ){ return Curried<N,F>( forward<F>( f )); }
 
+    template< typename F, size_t N >
+    constexpr auto
+    curry( F&& f, Nat<N> ){ return Curried<N,F>( forward<F>( f )); }
+
 
 
     
