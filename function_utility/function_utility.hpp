@@ -10,6 +10,7 @@
 #include <function_utility/curry.hpp>
 #include <function_utility/static_application.hpp>
 #include <function_utility/static_curried.hpp>
+#include <function_utility/select.hpp>
 #include <function_utility/power.hpp>
 #include <function_utility/nsplit.hpp>
 
@@ -44,7 +45,7 @@ namespace FunctionUtility
   using Core::first;
 
   /** Apply to second argument */
-  using Core::second;
+  using Core::rest;
 
   /** Partial application */
   using Core::part;
@@ -67,6 +68,8 @@ namespace FunctionUtility
 
   /** CRTP base class for curried static function call operator */
   using Core::Static_curried;
+
+  
 
 
 

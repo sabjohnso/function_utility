@@ -1,8 +1,13 @@
 //
+// ... Standard header files
+//
+#include <utility>
+
+//
 // ... Function Utility header files
 //
 #include <function_utility/composite.hpp>
-
+#include <function_utility/function_utility.hpp>
 
 //
 // ... Testing header files
@@ -29,18 +34,42 @@ struct Composition_test
       compose( add, pcompose( identity, identity ))( 3, 4 ) == 7 );
 
     FUNCTION_UTILITY_STATIC_TEST(
-      compose( add, first( sqr ), second( twc ))( 3, 4 ) == 17 );
+      compose( add, first( sqr ), rest( twc ))( 3, 4 ) == 17 );
 
 
     FUNCTION_UTILITY_STATIC_TEST(
       compose( multiply, dup )( 3 ) == 9 );
-      
+      				  
+  }
+  operator int() const { return accum; }
+
+private:
+  int accum;
+}; // end of struct Composition_test
+
+
+/** Test argument selection */
+struct Selection_test
+{
+  Selection_test() : accum( 0 ) {
+    using namespace FunctionUtility::Core;
+    using std::index_sequence;
+    FUNCTION_UTILITY_STATIC_TEST(
+      selection( add, index_sequence<1,2>())(1, 2, 3, 4, 5 ) == 5 );
+
+    FUNCTION_UTILITY_STATIC_TEST(
+      selection( multiply, index_sequence<1,2>(), 1, 2, 3, 4, 5 ) == 6 );
     
-				  
+    FUNCTION_UTILITY_TEST(
+      accum, selection( add, index_sequence<1,2>())( 1, 2, 3, 4, 5 ) == 5 );
+
+    FUNCTION_UTILITY_TEST(
+      accum,
+      selection( multiply, index_sequence<1,2>(), 1, 2, 3, 4, 5 ) == 6 );
   }
   operator int() const { return accum; }
   int accum;
-}; // end of struct Composition_test
+}; // end of struct Selection_test
 
 
 int
@@ -48,5 +77,6 @@ main( int, char** )
 {
   int accum = 0;
   accum += Composition_test();
+  accum += Selection_test();
   return accum;
 }

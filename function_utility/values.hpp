@@ -23,6 +23,27 @@ namespace FunctionUtility
 
     private:
 
+      template< size_t ... indices >
+      friend constexpr auto
+      select( Values&& xs, index_sequence<indices...>){
+
+	return select( 
+	  TypeUtility::select( types<Ts...>, index_sequence<indices...>()),
+	  index_sequence<indices...>(),
+	  move( xs ));
+      }
+
+      template< size_t ... indices >
+      friend constexpr auto
+      select( const Values& xs, index_sequence<indices...> ){
+	return select(
+	  TypeUtility::select( types<Ts...>, index_sequence<indices...>()),
+	  index_sequence<indices...>(),
+	  xs );
+      }
+
+	  
+
       template<  typename ... Us, size_t ... indices, typename T >
       static constexpr auto
       select( Type_sequence<Us...>,
@@ -236,7 +257,7 @@ namespace FunctionUtility
 	return Values<Us...>( f( get<indices>( forward<T>( xs ))) ... );
       }
 
-
+      
 
       }; // end of class Values
     
@@ -335,7 +356,9 @@ namespace FunctionUtility
       } dup{};
 
       constexpr auto
-      operator ==( const Values<>&, const Values<>& ){ return true; }
+      operator ==( const Values<>&, const Values<>& ){
+	return true;
+      }
     
 
 

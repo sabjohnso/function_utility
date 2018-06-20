@@ -11,6 +11,7 @@
 
 
 
+
 namespace FunctionUtility
 {
   namespace Core
@@ -286,7 +287,7 @@ namespace FunctionUtility
     } fanout{}; // end of class Fanout
 
 
-
+    
     
     /**
      * @brief Return a function that applies the input function
@@ -327,7 +328,18 @@ namespace FunctionUtility
 	os << "FunctionUtility::Core::Rest";
 	return os;
       }
-    } second{}; // end of class Rest
+    } rest {}; // end of class Rest
+
+
+    /**
+     * @brief Return a function selecting arguments based on an index_sequence
+     *
+     * @details 
+     */
+
+
+    
+   
 
 
     /**
@@ -429,6 +441,9 @@ namespace FunctionUtility
       }
       
     } rpart{}; // end of class RPart;
+
+
+    
     
   } // end of namespace Core
 } // end of namespace FunctionUtility

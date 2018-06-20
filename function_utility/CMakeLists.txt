@@ -10,6 +10,7 @@ install( FILES
   import.hpp
   nsplit.hpp
   power.hpp
+  select.hpp
   static_application.hpp
   static_curried.hpp
   values.hpp

@@ -54,6 +54,18 @@ struct Values_test
     FUNCTION_UTILITY_STATIC_TEST( get<0>( head( values( 1, 2, 3, 4 ))) == 1 );
     FUNCTION_UTILITY_STATIC_TEST( get<0>( tail( values( 1, 2, 3, 4 ))) == 2 );
     FUNCTION_UTILITY_STATIC_TEST( get<0>( tail( tail( values( 1, 2, 3, 4 )))) == 3 );
+
+    FUNCTION_UTILITY_STATIC_TEST(
+      select(values( 1, 2, 3, 4 ), index_sequence<0,2>()) ==
+      values( 1, 3 ));
+
+    FUNCTION_UTILITY_STATIC_TEST(
+      select(values( 1, 2, 3, 4 ), index_sequence<1,2>()) ==
+      values(2,3));
+
+    FUNCTION_UTILITY_STATIC_TEST(
+      select(values( 1, 2, 3, 4 ), index_sequence<>()) ==
+      values());
     
 
 
