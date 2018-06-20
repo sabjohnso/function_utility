@@ -55,12 +55,9 @@ namespace FunctionUtility
 
   
   using Core::powerfunc;
-
-
   using Core::curry;
-
-
   using Core::partition;
+  using Core::selection;
 
 
   /** CRTP base class for deriving the function call operator */
