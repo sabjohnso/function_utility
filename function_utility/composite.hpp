@@ -247,7 +247,20 @@ namespace FunctionUtility
     } pcompose{}; // end of class PCompose
 
 
-
+    /** 
+     * @brief An execution model duplicating the input and 
+     * send one copy to the first function and one to the second.
+     */    
+    class Dup
+    {
+    public:
+      template< typename F, typename G, typename T >
+      static constexpr auto
+      exec( F&& f, G&& g, const T& xs ){
+	return values( apply( forward<F>( f ), xs ),
+		       apply( forward<G>( g ), xs ));
+      }
+    }; // end of class Dup
 
     
     /**
@@ -260,12 +273,11 @@ namespace FunctionUtility
     class Fanout : public Static_callable<Fanout>{
     public:
 
-      
       template< typename F, typename G >
       static constexpr auto
       call(  F&& f, G&& g ){
-	return compose( pcompose( forward<F>( f ), forward<G>( g )), dup );
-      }
+	return Composite<Dup,decay_t<F>,decay_t<G>>( forward<F>( f ), forward<G>( g ));
+      } // end of function call
 
       template< typename F, typename G, typename H, typename ... Is >
       static constexpr auto

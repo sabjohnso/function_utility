@@ -27,8 +27,10 @@ struct Composition_test
     using namespace FunctionUtility::Core;
     FUNCTION_UTILITY_STATIC_TEST( compose( sqr, twc )( 3 ) == 36 );
     FUNCTION_UTILITY_STATIC_TEST( pcompose( sqr, twc )( 3, 4 ) == values( 9, 8 ));
-    FUNCTION_UTILITY_STATIC_TEST( fanout( sqr, twc )( 3 ) == values( 9, 6 ));
-
+    FUNCTION_UTILITY_STATIC_TEST(
+      [](const auto& x ){ return values( apply( sqr, x ), apply( twc, x )); }(
+	values( 3 )) == values( 9, 6 ));
+    FUNCTION_UTILITY_STATIC_TEST( fanout( sqr, twc )( 3 ) == values( 9, 6 ))
 
     FUNCTION_UTILITY_STATIC_TEST(
       compose( add, pcompose( identity, identity ))( 3, 4 ) == 7 );
@@ -36,9 +38,8 @@ struct Composition_test
     FUNCTION_UTILITY_STATIC_TEST(
       compose( add, first( sqr ), rest( twc ))( 3, 4 ) == 17 );
 
+    
 
-    FUNCTION_UTILITY_STATIC_TEST(
-      compose( multiply, dup )( 3 ) == 9 );
       				  
   }
   operator int() const { return accum; }

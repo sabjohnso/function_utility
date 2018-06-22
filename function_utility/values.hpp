@@ -99,6 +99,7 @@ namespace FunctionUtility
 	return aux( generate_indices<Ts...>(), forward<F>( f ),
 		    move( xs ));
       }
+      
 
       template< size_t ... xindicies, size_t ... yindicies, typename ... Us >
       static constexpr auto
@@ -339,21 +340,13 @@ namespace FunctionUtility
 
 
 
-
+    
 
 
     
 
     
-      constexpr
-      class Dup{
-      public:
-	template< typename T >
-	constexpr auto
-	operator ()( T&& x ) const & {
-	  return values( x, x );
-	}
-      } dup{};
+
 
       constexpr auto
       operator ==( const Values<>&, const Values<>& ){

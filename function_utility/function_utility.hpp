@@ -4,6 +4,7 @@
 //
 // ... Function Utility header files
 //
+#include <function_utility/import.hpp>
 #include <function_utility/values.hpp>
 #include <function_utility/identity.hpp>
 #include <function_utility/composite.hpp>
@@ -25,8 +26,7 @@ namespace FunctionUtility
   /** Identity function */
   using Core::identity;
   
-  /** Duplicate the first argument */
-  using Core::dup;
+
   
 
   /** Sequential composition of functions */
