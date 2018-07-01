@@ -31,6 +31,10 @@ namespace FunctionUtility
       operator ()( Ts&& ... xs ) const & {
 	return F::call( forward<Ts>( xs ) ... );
       }
+
+    protected:
+      Static_callable() = default;
+      ~Static_callable() = default;
       
     }; // end of class Static_callable
 

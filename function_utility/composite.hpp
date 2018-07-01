@@ -29,9 +29,15 @@ namespace FunctionUtility
       using second_type = G;
       using base = pair<F,G>;
 
-      using base::base;
+      template< typename T, typename U >
+      constexpr
+      Composite( T&& x, U&& y )
+	: base( forward<T>( x ), forward<U>( y ))
+      {}
 
-
+      
+      Composite(){}
+      ~Composite() = default;
        
 
       template< typename ... Ts >
@@ -60,6 +66,7 @@ namespace FunctionUtility
 	   << fun.second << ')';
 	return os;
       }
+
       
     }; // end of class Composite
 
@@ -153,6 +160,10 @@ namespace FunctionUtility
       exec( F&& f, T&& x, Values<Ts...>&& xs ){
 	return apply( forward<F>( f ), values( values( forward<T>( x )), move( xs )));
       }
+
+      Partial() = default;
+      ~Partial() = default;
+	
       
     };
 

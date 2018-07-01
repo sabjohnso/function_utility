@@ -19,7 +19,9 @@ namespace FunctionUtility
     template< typename F, size_t N >
     class Static_curried<F,Nat<N>> : public CRTP<Static_curried,F>
     {
+      
     public:
+      
       using function_type = F;
       
       struct equal_tag{};
@@ -33,7 +35,15 @@ namespace FunctionUtility
 		    conditional_t< (N > count_types<Ts...>()), less_tag, more_tag >>(),
 		    forward<Ts>( xs ) ... );
       }
+
+
+
+    protected:
+      Static_curried() = default;
+      ~Static_curried() = default;
+      
     private:
+      
       template< typename ... Ts >
       constexpr auto
       aux( equal_tag, Ts&& ... xs ) const & {
@@ -43,7 +53,7 @@ namespace FunctionUtility
       template< typename ... Ts >
       constexpr auto
       aux( less_tag, Ts&& ... xs ) const & {
-	return curry<N>( *this )( forward<Ts>( xs ) ... );
+	return curry<N>( static_cast<const F&>(*this ))( forward<Ts>( xs ) ... );
       }
 
       template< typename ... Ts >
@@ -55,7 +65,7 @@ namespace FunctionUtility
       template< typename T >
       constexpr auto
       aux2( T&& xs ) const & {
-	return apply( apply( *this, take( forward<T>( xs ), nat<N> )),
+	return apply( apply( static_cast<const F&>( *this ), take( forward<T>( xs ), nat<N> )),
 		      drop( forward<T>( xs ), nat<N>));
       }
       
