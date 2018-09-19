@@ -459,7 +459,7 @@ namespace FunctionUtility
       template< typename Stream >
       friend Stream& 
       operator <<( Stream& os, RPart ){
-	os << "FunctionUtility::Core::rapart";
+	os << "FunctionUtility::Core::rpart";
 	return os;
       }
       

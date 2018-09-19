@@ -39,6 +39,12 @@ namespace FunctionUtility
     }; // end of class Static_callable
 
 
+    template< typename T >
+    struct is_static_callable
+      : is_base_of<Static_callable<decay_t<T>>, decay_t<T>>
+    {};
+
+
     
 
     

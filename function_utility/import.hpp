@@ -25,6 +25,8 @@ namespace FunctionUtility
     using std::move;
     using std::get;
     using std::index_sequence;
+
+    using std::is_base_of;
     using std::conditional_t;
     using std::decay_t;
     using std::result_of_t;
