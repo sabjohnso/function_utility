@@ -25,7 +25,7 @@ namespace FunctionUtility
 
       template< typename F, typename T >
       static constexpr auto
-      aux( F&& f, Nat<0>, T&& xs ){
+      aux( F&& , Nat<0>, T&& xs ){
 	return forward<T>( xs );
       }
       template< typename F, typename T >

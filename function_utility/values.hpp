@@ -173,7 +173,7 @@ namespace FunctionUtility
 
       template< size_t index, typename Stream >
       static Stream&
-      print_values( index_sequence<>, Stream& os, const Values& xs ){
+      print_values( index_sequence<>, Stream& os, const Values& ){
 	return os;
       }
 

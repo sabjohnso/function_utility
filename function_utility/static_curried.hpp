@@ -37,11 +37,6 @@ namespace FunctionUtility
       }
 
 
-
-    protected:
-      Static_curried() = default;
-      ~Static_curried() = default;
-      
     private:
       
       template< typename ... Ts >

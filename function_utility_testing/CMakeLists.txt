@@ -1,7 +1,9 @@
+
 macro( function_utility_add_simple_test  name )
-  add_executable( ${name}_test ${name}_test.cpp )
-  add_test( ${name} ${name}_test ) 
-endmacro( function_utility_add_simple_test  name )
+  add_executable( ${name}_test ${name}_test.cpp ) 
+  target_link_libraries( ${name}_test PRIVATE function_utility )
+  add_test( ${name} ${name}_test )
+endmacro()
 
 
 function_utility_add_simple_test( values )

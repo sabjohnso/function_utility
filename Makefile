@@ -1,14 +1,14 @@
 
 TOPLEVEL_BUILD_DIRECTORY = ./build
-CC=gcc-7.3
-CXX=g++-7.3
+
+
 
 MAKEFILE = $(BUILD_DIRECTORY)/Makefile
 
 CMAKE_FLAGS_COMMON = \
   -DCMAKE_CXX_STANDARD=17 \
   -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-  -DCMAKE_CXX_FLAGS="-Wall -Werror -pedantic" \
+  -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wshadow -pedantic -Werror " \
   -DCMAKE_CXX_FLAGS_RELWITHDEBINFO=-O3 -g
 
 

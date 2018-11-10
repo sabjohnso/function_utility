@@ -7,7 +7,7 @@ namespace FunctionUtility
   {
     constexpr int major_version = ${FUNCTION_UTILITY_MAJOR};
     constexpr int minor_version = ${FUNCTION_UTILITY_MINOR};
-    constexpr int update = ${FUNCTON_UTILITY_UPDATE};
+    constexpr int update = ${FUNCTION_UTILITY_UPDATE};
     
   } // end of namespace Config
 } // end of namespace FunctionUtility

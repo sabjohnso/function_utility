@@ -187,8 +187,8 @@ namespace FunctionUtility
      * @details
      *
      */
-    constexpr
-    class Compose : public  Static_callable<Compose>
+    inline constexpr
+    class Compose : public Static_callable<Compose>
     {
     public:
       template< typename F, typename G >

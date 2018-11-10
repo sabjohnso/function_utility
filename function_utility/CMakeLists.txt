@@ -1,5 +1,5 @@
 configure_file( config.hpp.in config.hpp )
-
+  
 
 install( FILES
   ${CMAKE_CURRENT_BINARY_DIR}/config.hpp
@@ -14,4 +14,12 @@ install( FILES
   static_application.hpp
   static_curried.hpp
   values.hpp
-  DESTINATION ${FUNCTION_UTILITY_INSTALL_INCLUDE_DIR})
+  DESTINATION ${FUNCTION_UTILITY_INSTALL_INCLUDE_DIR}/function_utility)
+
+configure_file( function_utility-config.cmake.in function_utility-config.cmake)
+install( FILES
+  ${CMAKE_CURRENT_BINARY_DIR}/function_utility-config.cmake
+  DESTINATION ${FUNCTION_UTILITY_INSTALL_LIBRARY_DIR} )
+
+
+
