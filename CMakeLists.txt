@@ -54,7 +54,7 @@ endif()
 # ... Header library target
 #
 add_library( function_utility INTERFACE )
-target_link_libraries( function_utility INTERFACE type_utility )
+target_link_libraries( function_utility INTERFACE type_utility::type_utility )
 
 
 target_include_directories( function_utility
@@ -71,6 +71,7 @@ install( TARGETS function_utility EXPORT function_utility
   DESTINATION ${FUNCTION_UTILITY_INSTALL_LIBRARY_DIR})
 
 install( EXPORT function_utility
+  NAMESPACE function_utility::
   DESTINATION ${FUNCTION_UTILITY_INSTALL_LIBRARY_DIR}
   FILE function_utility.cmake )
 
