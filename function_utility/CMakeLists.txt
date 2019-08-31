@@ -1,7 +1,7 @@
 configure_file( config.hpp.in config.hpp )
   
 
-install( FILES
+set( FUNCTION_UTILITY_HEADER_FILES
   ${CMAKE_CURRENT_BINARY_DIR}/config.hpp
   composite.hpp
   curry.hpp
@@ -13,13 +13,15 @@ install( FILES
   select.hpp
   static_application.hpp
   static_curried.hpp
-  values.hpp
-  DESTINATION ${FUNCTION_UTILITY_INSTALL_INCLUDE_DIR}/function_utility)
-
-configure_file( function_utility-config.cmake.in function_utility-config.cmake)
+  values.hpp )
+  
 install( FILES
-  ${CMAKE_CURRENT_BINARY_DIR}/function_utility-config.cmake
-  DESTINATION ${FUNCTION_UTILITY_INSTALL_LIBRARY_DIR} )
+  ${FUNCTION_UTILITY_HEADER_FILES}
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/function_utility )
+
+
+
+
 
 
 

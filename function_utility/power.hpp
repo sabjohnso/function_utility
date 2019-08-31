@@ -13,7 +13,10 @@ namespace FunctionUtility
   {
 
     
-
+    /**
+     * @brief A class providing an execution model for repeated
+     * application of a function
+     */
     class Power {
     public:
       template< typename F, size_t N, typename T >
@@ -53,7 +56,7 @@ namespace FunctionUtility
       aux( F&& f, Nat<N>, T&& xs ){
 	return aux( f, nat<N-1>, apply( f, forward<T>( xs )));
       }
-    };
+    }; // end of class Power
 
 
     constexpr

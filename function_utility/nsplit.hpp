@@ -61,7 +61,7 @@ namespace FunctionUtility
 	return values( apply( forward<F>( f ), take( xs, nat<N> )),
 		       apply( forward<G>( g ), take( drop( xs, nat<N> ), nat<M> )));
       }
-    }; // end of class NSplit
+    }; // end of class NMSplit
 
 
     constexpr

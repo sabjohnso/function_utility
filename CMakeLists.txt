@@ -10,15 +10,16 @@ project( FUNCTION_UTILITY VERSION 0.2.0 LANGUAGES CXX )
 # ... Build options
 #
 option( BUILD_FUNCTION_UTILITY_TESTING  "Build the function_utility  tests" ON )
-option( BUILD_FUNCTION_UTILITY_DOCUMENTATION "Build the function_utility documentation" ON )
+option( BUILD_FUNCTION_UTILITY_DOCUMENTATION "Build the function_utility documentation" OFF )
 
-list(INSERT CMAKE_MODULE_PATH 0 ${FUNCTION_UTILITY_SOURCE_DIR}/cmake)
+list( INSERT CMAKE_MODULE_PATH 0 ${FUNCTION_UTILITY_SOURCE_DIR}/cmake )
 include(GNUInstallDirs)
 
 #
 # ... Dependencies
 #
-find_package( type_utility REQUIRED )
+include(function_utility_deps)
+
 
 #
 # ... Header library target
@@ -30,20 +31,14 @@ target_include_directories( function_utility
   INTERFACE
   $<BUILD_INTERFACE:${FUNCTION_UTILITY_SOURCE_DIR}>
   $<BUILD_INTERFACE:${FUNCTION_UTILITY_BINARY_DIR}>
-  $<INSTALL_INTERFACE:${FUNCTION_UTILITY_INSTALL_INCLUDE_DIR}>)
+  $<INSTALL_INTERFACE:${FUNCTION_UTILITY_INSTALL_INCLUDE_DIR}> )
 
 #
 # ... Walk the source tree
 #
 add_subdirectory( function_utility )
 
-install( TARGETS function_utility EXPORT function_utility
-  DESTINATION ${FUNCTION_UTILITY_INSTALL_LIBRARY_DIR})
 
-install( EXPORT function_utility
-  NAMESPACE function_utility::
-  DESTINATION ${FUNCTION_UTILITY_INSTALL_LIBRARY_DIR}
-  FILE function_utility.cmake )
 
 #
 # ... Testing
@@ -85,5 +80,23 @@ if( BUILD_FUNCTION_UTILITY_DOCUMENTATION )
   install( DIRECTORY ${FUNCTION_UTILITY_BINARY_DIR}/doc/html DESTINATION ${FUNCTION_UTILITY_INSTALL_DOC_DIR} )
   install( DIRECTORY ${FUNCTION_UTILITY_BINARY_DIR}/doc/man DESTINATION ${FUNCTION_UTILITY_INTALL_MAN_DIR} )
 endif( BUILD_FUNCTION_UTILITY_DOCUMENTATION )
+
+
+#
+# ... Installation
+#
+set(FUNCTION_UTILITY_CONFDIR ${CMAKE_INSTALL_LIBDIR}/cmake/function_utility)
+install( TARGETS function_utility EXPORT function_utility
+  DESTINATION ${FUNCTION_UTILITY_CONFDIR} )
+
+install( EXPORT function_utility
+  NAMESPACE function_utility::
+  DESTINATION ${FUNCTION_UTILITY_CONFDIR}
+  FILE function_utility_exports.cmake )
+
+configure_file( function_utility-config.cmake.in function_utility-config.cmake)
+install( FILES
+  ${CMAKE_CURRENT_BINARY_DIR}/function_utility-config.cmake
+  DESTINATION ${FUNCTION_UTILITY_CONFDIR})
 
 # end of build definition for function_utility

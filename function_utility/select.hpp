@@ -14,7 +14,7 @@ namespace FunctionUtility
 
 
     /** 
-     * @brief An application model that select applies a function
+     * @brief An application model that applies a function
      * to selection of values.
      */
     class Select

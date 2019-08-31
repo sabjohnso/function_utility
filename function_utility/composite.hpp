@@ -17,7 +17,14 @@ namespace FunctionUtility
   namespace Core
   {
 
-    /** Generic composite function */
+    /** 
+     * @brief A class templace representing a generic composite function
+     *
+     * @details Specializations of this class represent composite functions 
+     * where the execution can operate in different manners based on the
+     * first template parameter which is refered to as the "execution model" 
+     * here.
+     */
     template< typename E,  typename F, typename G >
     class Composite : pair<F,G>
     {
