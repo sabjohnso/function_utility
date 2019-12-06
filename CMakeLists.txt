@@ -26,6 +26,7 @@ include(function_utility_deps)
 #
 add_library( function_utility INTERFACE )
 target_link_libraries( function_utility INTERFACE type_utility::type_utility )
+add_library( function_utility::function_utility ALIAS function_utility )
 
 target_include_directories( function_utility  
   INTERFACE

@@ -6,6 +6,11 @@
 //
 #include <iostream>
 
+//
+// ... Testing header files
+//
+#include <gtest/gtest.h>
+
 
 
 #define FUNCTION_UTILITY_TEST_PRINT_AUX( ... ) #__VA_ARGS__
@@ -50,7 +55,7 @@
 #define FUNCTION_UTILITY_STATIC_TEST( ... )				\
   {									\
     static_assert( __VA_ARGS__, "FUNCTION_UTILITY static test failure" ); \
-    std::cout << '+';							\
+    EXPECT_TRUE((__VA_ARGS__));						\
   }
 
 /**  Don't run the test, just print a ? to idicated that

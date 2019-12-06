@@ -72,12 +72,14 @@ struct Selection_test
   int accum;
 }; // end of struct Selection_test
 
-
-int
-main( int, char** )
+namespace FunctionUtility
 {
-  int accum = 0;
-  accum += Composition_test();
-  accum += Selection_test();
-  return accum;
-}
+  namespace Testing
+  {
+    TEST(Composite, Legacy)
+    {
+      Composition_test{};
+      Selection_test{};
+    }
+  } // end of namespace Testing
+} // end of namespace FunctionUtility

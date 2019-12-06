@@ -20,8 +20,3 @@ install( FILES
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/function_utility )
 
 
-
-
-
-
-
