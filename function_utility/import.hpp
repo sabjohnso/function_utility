@@ -4,55 +4,49 @@
 //
 // ... Standard header files
 //
-#include <utility>
 #include <tuple>
 #include <type_traits>
-
+#include <utility>
 
 //
 // ... Type Utility header files
 //
 #include <type_utility/type_utility.hpp>
 
+namespace FunctionUtility {
+  namespace Core {
 
-namespace FunctionUtility
-{
-  namespace Core
-  {
-
-    using std::pair;
     using std::forward;
-    using std::move;
     using std::get;
     using std::index_sequence;
+    using std::move;
+    using std::pair;
 
-    using std::is_base_of;
     using std::conditional_t;
     using std::decay_t;
+    using std::is_base_of;
     using std::result_of_t;
     using std::tuple;
 
+    using TypeUtility::CRTP;
+    using TypeUtility::generate_indices;
+    using TypeUtility::Nat;
+    using TypeUtility::nat;
     using TypeUtility::type;
     using TypeUtility::Type;
     using TypeUtility::Type1;
-    using TypeUtility::generate_indices;
-    using TypeUtility::CRTP;
-    using TypeUtility::Value;
-    using TypeUtility::Nat;
-    using TypeUtility::nat;
     using TypeUtility::Type_sequence;
     using TypeUtility::types;
+    using TypeUtility::Value;
 
     using TypeUtility::count_types;
 
-    using TypeUtility::Nat;
-    using TypeUtility::take;
     using TypeUtility::drop;
-    using TypeUtility::select;
     using TypeUtility::length;
-    
-    
-    
+    using TypeUtility::Nat;
+    using TypeUtility::select;
+    using TypeUtility::take;
+
   } // end of namespace Core
 } // end of namespace FunctionUtility
 
