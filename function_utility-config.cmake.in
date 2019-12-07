@@ -1,2 +1,4 @@
-list(INSERT CMAKE_MODULE_PATH @CMAKE_INSTALL_PREFIX@/@FUNCTION_UTILITY_CONFDIR@)
-include(function_utility_exports)
+if(NOT TARGET function_utility::function_utility)
+  list(INSERT CMAKE_MODULE_PATH 0 @CMAKE_INSTALL_PREFIX@/@FUNCTION_UTILITY_CONFDIR@)
+  include(function_utility_exports)
+endif()
