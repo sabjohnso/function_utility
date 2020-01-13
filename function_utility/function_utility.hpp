@@ -36,6 +36,9 @@ namespace FunctionUtility {
   /** Generalized composition */
   using Core::scompose;
 
+  /** Environmental composition */
+  using Core::ecompose;
+
   /** Fanout */
   using Core::fanout;
 

@@ -127,6 +127,29 @@ namespace FunctionUtility {
     }; // end of class Generalized
 
     /**
+     * @brief Execution model for Environmental application
+     */
+    class Environmental
+    {
+    public:
+      template<typename F, typename G, typename... Ts>
+      static constexpr auto
+      exec(F&& f, G&& g, Values<Ts...>&& xs)
+      {
+        return aux(
+          forward<F>(f), forward<G>(g), head(move(xs)), tail(move(xs)));
+      }
+
+    private:
+      template<typename F, typename G, typename T, typename... Ts>
+      static constexpr auto
+      aux(F&& f, G&& g, T&& x, Values<Ts...>&& xs)
+      {
+        return apply(forward<F>(f)(forward<G>(g)(x)), x, move(xs));
+      }
+    }; // end of class Environmental
+
+    /**
      * @brief Execution model for Partial application.
      */
     class Partial
@@ -338,8 +361,8 @@ namespace FunctionUtility {
       static constexpr auto
       call(F&& f, G&& g)
       {
-        return Composite<Generalized, decay_t<F>, decay_t<G>>(forward<F>(f),
-                                                              forward<G>(g));
+        using composite_type = Composite<Generalized, decay_t<F>, decay_t<G>>;
+        return composite_type(forward<F>(f), forward<G>(g));
       }
 
       template<typename F, typename G, typename H, typename... Is>
@@ -358,6 +381,26 @@ namespace FunctionUtility {
         return os;
       }
     } scompose{}; // end of class SCompose
+
+    constexpr class ECompose : public Static_callable<ECompose>
+    {
+    public:
+      template<typename F, typename G>
+      static constexpr auto
+      call(F&& f, G&& g)
+      {
+        using composite_type = Composite<Environmental, decay_t<F>, decay_t<G>>;
+        return composite_type(forward<F>(f), forward<G>(g));
+      }
+
+      template<typename F, typename G, typename H, typename... Hs>
+      static constexpr auto
+      call(F&& f, G&& g, H&& h, Hs&&... hs)
+      {
+        return call(forward<F>(f),
+                    call(forward<G>(g), forward<H>(h), forward<Hs>(hs)...));
+      }
+    } ecompose{};
 
     /**
      * @brief Partial function application
