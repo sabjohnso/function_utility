@@ -5,6 +5,7 @@
 // ... Function Utility header files
 //
 #include <function_utility/composite.hpp>
+#include <function_utility/constant.hpp>
 #include <function_utility/curry.hpp>
 #include <function_utility/identity.hpp>
 #include <function_utility/import.hpp>
@@ -22,6 +23,9 @@ namespace FunctionUtility {
 
   /** Identity function */
   using Core::identity;
+
+  /** Constant function (K combinator)*/
+  using Core::constant;
 
   /** Sequential composition of functions */
   using Core::compose;

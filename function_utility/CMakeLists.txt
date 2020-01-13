@@ -4,6 +4,7 @@ configure_file( config.hpp.in config.hpp )
 set( FUNCTION_UTILITY_HEADER_FILES
   ${CMAKE_CURRENT_BINARY_DIR}/config.hpp
   composite.hpp
+  constant.hpp
   curry.hpp
   function_utility.hpp
   identity.hpp
