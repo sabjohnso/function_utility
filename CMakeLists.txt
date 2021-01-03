@@ -1,4 +1,4 @@
-#O
+#
 # ... Build script for function_utility
 #
 

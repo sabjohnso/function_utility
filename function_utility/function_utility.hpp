@@ -4,6 +4,7 @@
 //
 // ... Function Utility header files
 //
+#include <function_utility/trampoline.hpp>
 #include <function_utility/composite.hpp>
 #include <function_utility/constant.hpp>
 #include <function_utility/curry.hpp>
@@ -17,6 +18,9 @@
 #include <function_utility/values.hpp>
 
 namespace FunctionUtility {
+
+  /** A trampoline for tail calls */
+  using Core::Trampoline;
 
   /** Multiple values */
   using Core::values;

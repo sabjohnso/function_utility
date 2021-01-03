@@ -7,6 +7,9 @@
 #include <tuple>
 #include <type_traits>
 #include <utility>
+#include <variant>
+#include <mutex>
+#include <functional>
 
 //
 // ... Type Utility header files
@@ -27,6 +30,14 @@ namespace FunctionUtility {
     using std::is_base_of;
     using std::result_of_t;
     using std::tuple;
+
+    using std::variant;
+    using std::holds_alternative;
+
+    using std::function;
+
+    using std::mutex;
+    using std::lock_guard;
 
     using TypeUtility::CRTP;
     using TypeUtility::generate_indices;

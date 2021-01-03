@@ -16,6 +16,7 @@ macro( function_utility_add_simple_test  name )
   add_test( ${name} ${name}_test )
 endmacro()
 
+function_utility_add_test(trampoline trampoline_test trampoline_test.cpp)
 function_utility_add_test(values values_test values_test.cpp)
 function_utility_add_test(composite composite_test composite_test.cpp)
 function_utility_add_test(constant constant_test constant_test.cpp)
@@ -24,3 +25,5 @@ function_utility_add_simple_test( static_callable )
 function_utility_add_simple_test( static_curried )
 function_utility_add_simple_test( powerfunc )
 function_utility_add_simple_test( partition )
+
+

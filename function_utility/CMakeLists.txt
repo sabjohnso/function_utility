@@ -14,7 +14,8 @@ set( FUNCTION_UTILITY_HEADER_FILES
   select.hpp
   static_application.hpp
   static_curried.hpp
-  values.hpp )
+  trampoline.hpp
+  values.hpp)
   
 install( FILES
   ${FUNCTION_UTILITY_HEADER_FILES}
