@@ -50,6 +50,7 @@ namespace FunctionUtility::Core
       return get<value_type>(move(data));
     }
 
+    explicit
     operator const_reference () const& {
       reify();
       return get<value_type>(data);

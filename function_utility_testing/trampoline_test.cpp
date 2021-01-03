@@ -28,9 +28,10 @@ namespace FunctionUtility::Testing
     struct Add : Static_curried<Add, Nat<2>> {
       static integer
       call(integer m, integer n){
-        return m >= 0
+        return integer(
+          m >= 0
           ? aux_pos(m, n)
-          : aux_neg(m, n);
+          : aux_neg(m, n));
       }
     private:
       static Trampoline<integer>
@@ -58,7 +59,7 @@ namespace FunctionUtility::Testing
     struct Fact : Static_callable<Fact> {
       static integer
       call(integer n){
-        return aux(n, 1, 1);
+        return integer(aux(n, 1, 1));
       }
     private:
       static Trampoline<integer>
@@ -81,10 +82,10 @@ namespace FunctionUtility::Testing
     struct Odd_tag{};
     struct Even_or_odd : Static_curried<Even_or_odd, Nat<2>>{
       static bool
-      call(Even_tag, integer n){ return even(n >= 0 ? n : -n); }
+      call(Even_tag, integer n){ return bool(even(n >= 0 ? n : -n)); }
 
       static bool
-      call(Odd_tag, integer n){ return odd(n >= 0 ? n : -n); }
+      call(Odd_tag, integer n){ return bool(odd(n >= 0 ? n : -n)); }
 
     private:
 
