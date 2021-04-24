@@ -1,4 +1,4 @@
-include( FetchGTest )
+find_package(GTest REQUIRED)
 
 macro( function_utility_add_test name exe_name)
   add_executable( ${exe_name} ${ARGN} )
@@ -12,7 +12,7 @@ endmacro()
 macro( function_utility_add_simple_test  name )
   add_executable( ${name}_test ${name}_test.cpp )
   set_target_properties( ${name}_test PROPERTIES CXX_STANDARD 17 )
-  target_link_libraries( ${name}_test PRIVATE function_utility )  
+  target_link_libraries( ${name}_test PRIVATE function_utility GTest::gtest)  
   add_test( ${name} ${name}_test )
 endmacro()
 

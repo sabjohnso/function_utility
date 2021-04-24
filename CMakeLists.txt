@@ -12,7 +12,13 @@ project( FUNCTION_UTILITY VERSION 0.2.0 LANGUAGES CXX )
 option( BUILD_FUNCTION_UTILITY_TESTING  "Build the function_utility  tests" ON )
 option( BUILD_FUNCTION_UTILITY_DOCUMENTATION "Build the function_utility documentation" OFF )
 
-list( INSERT CMAKE_MODULE_PATH 0 ${FUNCTION_UTILITY_SOURCE_DIR}/cmake )
+
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
+list(INSERT CMAKE_MODULE_PATH 0 ${PROJECT_SOURCE_DIR}/cmake)
+
 include(GNUInstallDirs)
 
 #
