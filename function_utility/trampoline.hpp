@@ -6,25 +6,22 @@
 //
 #include <function_utility/import.hpp>
 
-namespace FunctionUtility::Core
-{
+namespace FunctionUtility::Core {
   template<typename T>
   using Thunk_of = function<T()>;
 
-  template<typename T, template<typename > class Thunk = Thunk_of>
+  template<typename T, template<typename> class Thunk = Thunk_of>
   class Trampoline
   {
   public:
-
     using value_type = T;
     using const_reference = value_type const&;
-    using rvalue_reference = value_type &&;
+    using rvalue_reference = value_type&&;
 
   private:
-
     using thunk_type = Thunk<Trampoline>;
     using thunk_const_reference = thunk_type const&;
-    using thunk_rvalue_reference = thunk_type &&;
+    using thunk_rvalue_reference = thunk_type&&;
 
     using data_type = variant<value_type, thunk_type>;
 
@@ -32,45 +29,55 @@ namespace FunctionUtility::Core
     mutable mutex mex;
 
   public:
-
-    Trampoline(const_reference value) : data(value) {}
-    Trampoline(rvalue_reference value) : data(move(value)) {}
-    Trampoline(thunk_const_reference thunk) : data(thunk) {}
-    Trampoline(thunk_rvalue_reference thunk) : data(move(thunk)) {}
+    Trampoline(const_reference value)
+      : data(value)
+    {}
+    Trampoline(rvalue_reference value)
+      : data(move(value))
+    {}
+    Trampoline(thunk_const_reference thunk)
+      : data(thunk)
+    {}
+    Trampoline(thunk_rvalue_reference thunk)
+      : data(move(thunk))
+    {}
 
     const_reference
-    operator *() const& {
+    operator*() const&
+    {
       reify();
+      assert(holds_alternative<value_type>(data));
       return get<value_type>(data);
     }
 
     rvalue_reference
-    operator *() && {
+    operator*() &&
+    {
       reify();
+      assert(holds_alternative<value_type>(data));
       return get<value_type>(move(data));
     }
 
-    explicit
-    operator const_reference () const& {
+    explicit operator value_type() const&
+    {
       reify();
+      assert(holds_alternative<value_type>(data));
       return get<value_type>(data);
     }
 
   private:
-
     void
-    reify() const {
-      if(holds_alternative<thunk_type>(data)){
+    reify() const
+    {
+      if (holds_alternative<thunk_type>(data)) {
         lock_guard lock(mex);
-        while(holds_alternative<thunk_type>(data)){
-          auto temp = get<thunk_type>(data)();
-          data = move(temp.data);
+        while (holds_alternative<thunk_type>(data)) {
+          data = get<thunk_type>(data)().data;
         }
       }
     }
   }; // end of class Trampoline
 
 } // end of namespace FunctionUtility::Core
-
 
 #endif // ! defined TRAMPOLINE_HPP_INCLUDED_1344546961191746609

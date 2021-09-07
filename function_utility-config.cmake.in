@@ -1,5 +1,7 @@
 if(NOT TARGET function_utility::function_utility)
-  find_package(type_utility REQUIRED)
+  if(NOT TARGET type_utility::type_utility)
+    find_package(type_utility REQUIRED)
+  endif()
   list(INSERT CMAKE_MODULE_PATH 0 @CMAKE_INSTALL_PREFIX@/@FUNCTION_UTILITY_CONFDIR@)
   include(function_utility_exports)
 endif()
