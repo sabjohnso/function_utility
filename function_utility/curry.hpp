@@ -25,30 +25,32 @@ namespace FunctionUtility {
       constexpr auto
       operator()(T&& arg) const&
       {
-        using G = decay_t<decltype(part(this->get(), forward<T>(arg)))>;
-        return Curried<arity - 1, G>(part(this->get(), forward<T>(arg)));
+        using G = decay_t<decltype(part(this->get(), std::forward<T>(arg)))>;
+        return Curried<arity - 1, G>(part(this->get(), std::forward<T>(arg)));
       }
 
       template<typename T>
       constexpr auto
       operator()(T&& arg) &&
       {
-        using G = decay_t<decltype(part(this->get(), forward<T>(arg)))>;
-        return Curried<arity - 1, G>(part(this->get(), forward<T>(arg)));
+        using G = decay_t<decltype(part(this->get(), std::forward<T>(arg)))>;
+        return Curried<arity - 1, G>(part(this->get(), std::forward<T>(arg)));
       }
 
       template<typename T, typename U, typename... Vs>
       constexpr auto
       operator()(T&& x, U&& y, Vs&&... zs) const&
       {
-        return (*this)(forward<T>(x))(forward<U>(y), forward<Vs>(zs)...);
+        return (*this)(std::forward<T>(x))(
+          std::forward<U>(y), std::forward<Vs>(zs)...);
       }
 
       template<typename T, typename U, typename... Vs>
       constexpr auto
       operator()(T&& x, U&& y, Vs&&... zs) &&
       {
-        return (move(*this))(forward<T>(x))(forward<U>(y), forward<Vs>(zs)...);
+        return (std::move(*this))(std::forward<T>(x))(
+          std::forward<U>(y), std::forward<Vs>(zs)...);
       }
     };
 
@@ -66,28 +68,30 @@ namespace FunctionUtility {
       constexpr auto
       operator()(T&& x) const&
       {
-        return this->get()(forward<T>(x));
+        return this->get()(std::forward<T>(x));
       }
 
       template<typename T>
       constexpr auto
       operator()(T&& arg) &&
       {
-        return this->get()(forward<T>(arg));
+        return this->get()(std::forward<T>(arg));
       }
 
       template<typename T, typename U, typename... Vs>
       constexpr auto
       operator()(T&& x, U&& y, Vs&&... zs) const&
       {
-        return (*this)(forward<T>(x))(forward<U>(y), forward<Vs>(zs)...);
+        return (*this)(std::forward<T>(x))(
+          std::forward<U>(y), std::forward<Vs>(zs)...);
       }
 
       template<typename T, typename U, typename... Vs>
       constexpr auto
       operator()(T&& x, U&& y, Vs&&... zs) &&
       {
-        return (*this)(forward<T>(x))(forward<U>(y), forward<Vs>(zs)...);
+        return (*this)(std::forward<T>(x))(
+          std::forward<U>(y), std::forward<Vs>(zs)...);
       }
     };
 
@@ -95,14 +99,14 @@ namespace FunctionUtility {
     constexpr auto
     curry(F&& f)
     {
-      return Curried<N, F>(forward<F>(f));
+      return Curried<N, F>(std::forward<F>(f));
     }
 
     template<typename F, size_t N>
     constexpr auto
     curry(F&& f, Nat<N>)
     {
-      return Curried<N, F>(forward<F>(f));
+      return Curried<N, F>(std::forward<F>(f));
     }
 
   } // end of namespace Core

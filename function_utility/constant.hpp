@@ -23,7 +23,7 @@ namespace FunctionUtility {
       {}
 
       constexpr Constant(rvalue_reference input_value)
-        : value(move(input_value))
+        : value(std::move(input_value))
       {}
 
       constexpr Constant(Constant const& input)
@@ -31,7 +31,7 @@ namespace FunctionUtility {
       {}
 
       constexpr Constant(Constant&& input)
-        : value(move(input.value))
+        : value(std::move(input.value))
       {}
 
       template<typename U>
@@ -45,21 +45,21 @@ namespace FunctionUtility {
       constexpr rvalue_reference
       operator()(U&&) &&
       {
-        return move(value);
+        return std::move(value);
       }
 
       template<typename U, typename V, typename... Ws>
       constexpr auto
       operator()(U&&, V&& y, Ws&&... zs) const&
       {
-        return value(forward<V>(y), forward<Ws>(zs)...);
+        return value(std::forward<V>(y), std::forward<Ws>(zs)...);
       }
 
       template<typename U, typename V, typename... Ws>
       constexpr auto
       operator()(U&&, V&& y, Ws&&... zs) &&
       {
-        return move(value)(forward<V>(y), forward<Ws>(zs)...);
+        return std::move(value)(std::forward<V>(y), std::forward<Ws>(zs)...);
       }
 
     private:
@@ -75,7 +75,7 @@ namespace FunctionUtility {
       static constexpr auto
       call(T&& x)
       {
-        return Constant(forward<T>(x));
+        return Constant(std::forward<T>(x));
       }
     } constant{};
 

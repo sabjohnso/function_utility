@@ -36,7 +36,7 @@ namespace FunctionUtility {
             (count_types<Ts...>() == N),
             equal_tag,
             conditional_t<(N > count_types<Ts...>()), less_tag, more_tag>>(),
-          forward<Ts>(xs)...);
+          std::forward<Ts>(xs)...);
       }
 
     private:
@@ -44,21 +44,21 @@ namespace FunctionUtility {
       constexpr auto
       aux(equal_tag, Ts&&... xs) const&
       {
-        return function_type::call(forward<Ts>(xs)...);
+        return function_type::call(std::forward<Ts>(xs)...);
       }
 
       template<typename... Ts>
       constexpr auto
       aux(less_tag, Ts&&... xs) const&
       {
-        return curry<N>(static_cast<const F&>(*this))(forward<Ts>(xs)...);
+        return curry<N>(static_cast<const F&>(*this))(std::forward<Ts>(xs)...);
       }
 
       template<typename... Ts>
       constexpr auto
       aux(more_tag, Ts&&... xs) const&
       {
-        return aux2(values(forward<Ts>(xs)...));
+        return aux2(values(std::forward<Ts>(xs)...));
       }
 
       template<typename T>
@@ -66,8 +66,9 @@ namespace FunctionUtility {
       aux2(T&& xs) const&
       {
         return apply(
-          apply(static_cast<const F&>(*this), take(forward<T>(xs), nat<N>)),
-          drop(forward<T>(xs), nat<N>));
+          apply(
+            static_cast<const F&>(*this), take(std::forward<T>(xs), nat<N>)),
+          drop(std::forward<T>(xs), nat<N>));
       }
 
     }; // end of class static curried

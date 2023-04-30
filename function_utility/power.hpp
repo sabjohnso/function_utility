@@ -21,7 +21,7 @@ namespace FunctionUtility {
       static constexpr auto
       exec(F&& f, Nat<N>, T&& xs)
       {
-        return aux(f, nat<N>, forward<T>(xs));
+        return aux(f, nat<N>, std::forward<T>(xs));
       }
 
     private:
@@ -29,13 +29,13 @@ namespace FunctionUtility {
       static constexpr auto
       aux(F&&, Nat<0>, T&& xs)
       {
-        return forward<T>(xs);
+        return std::forward<T>(xs);
       }
       template<typename F, typename T>
       static constexpr auto
       aux(F&&, Nat<0>, Values<T>&& x)
       {
-        return get<0>(move(x));
+        return get<0>(std::move(x));
       }
 
       template<typename F, typename T>
@@ -49,14 +49,14 @@ namespace FunctionUtility {
       static constexpr auto
       aux(F&& f, Nat<1>, T&& xs)
       {
-        return apply(f, values(forward<T>(xs)));
+        return apply(f, values(std::forward<T>(xs)));
       }
 
       template<typename F, size_t N, typename T>
       static constexpr auto
       aux(F&& f, Nat<N>, T&& xs)
       {
-        return aux(f, nat<N - 1>, apply(f, forward<T>(xs)));
+        return aux(f, nat<N - 1>, apply(f, std::forward<T>(xs)));
       }
     }; // end of class Power
 
@@ -67,7 +67,7 @@ namespace FunctionUtility {
       static constexpr auto
       call(F&& f, Nat<N>)
       {
-        return Composite<Power, decay_t<F>, Nat<N>>(forward<F>(f), nat<N>);
+        return Composite<Power, decay_t<F>, Nat<N>>(std::forward<F>(f), nat<N>);
       }
     } powerfunc{}; // end of class Power_func;
 

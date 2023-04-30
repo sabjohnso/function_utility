@@ -21,7 +21,7 @@ namespace FunctionUtility {
       static constexpr auto
       exec(F&& f, index_sequence<indices...>, T&& xs)
       {
-        return apply(f, select(forward<T>(xs), index_sequence<indices...>{}));
+        return apply(f, select(std::forward<T>(xs), index_sequence<indices...>{}));
       }
     }; // end of class Select
 
@@ -33,7 +33,7 @@ namespace FunctionUtility {
       call(F&& f, index_sequence<indices...>)
       {
         return Composite<Select, decay_t<F>, index_sequence<indices...>>(
-          forward<F>(f), index_sequence<indices...>());
+          std::forward<F>(f), index_sequence<indices...>());
       }
     } selection{}; // end of class Selection
 

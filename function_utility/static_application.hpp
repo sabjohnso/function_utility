@@ -26,7 +26,7 @@ namespace FunctionUtility::Core {
     constexpr auto
     operator()(Ts&&... xs) const&
     {
-      return F::call(forward<Ts>(xs)...);
+      return F::call(std::forward<Ts>(xs)...);
     }
   }; // end of class Static_callable
 

@@ -33,13 +33,13 @@ namespace FunctionUtility::Core {
       : data(value)
     {}
     Trampoline(rvalue_reference value)
-      : data(move(value))
+      : data(std::move(value))
     {}
     Trampoline(thunk_const_reference thunk)
       : data(thunk)
     {}
     Trampoline(thunk_rvalue_reference thunk)
-      : data(move(thunk))
+      : data(std::move(thunk))
     {}
 
     const_reference
@@ -55,7 +55,7 @@ namespace FunctionUtility::Core {
     {
       reify();
       assert(holds_alternative<value_type>(data));
-      return get<value_type>(move(data));
+      return get<value_type>(std::move(data));
     }
 
     explicit operator value_type() const&

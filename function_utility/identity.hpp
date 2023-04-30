@@ -19,7 +19,7 @@ namespace FunctionUtility::Core {
     static constexpr auto
     call(T&& x)
     {
-      return forward<T>(x);
+      return std::forward<T>(x);
     }
 
     /**

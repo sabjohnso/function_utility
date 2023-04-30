@@ -24,16 +24,18 @@ namespace FunctionUtility {
       static constexpr auto
       exec(F&& f, G&& g, Values<Ts...>&& xs)
       {
-        return values(apply(forward<F>(f), take(move(xs), nat<N>)),
-                      apply(forward<G>(g), drop(move(xs), nat<N>)));
+        return values(
+          apply(std::forward<F>(f), take(std::move(xs), nat<N>)),
+          apply(std::forward<G>(g), drop(std::move(xs), nat<N>)));
       }
 
       template<typename F, typename G, typename... Ts>
       static constexpr auto
       exec(F&& f, G&& g, const Values<Ts...>& xs)
       {
-        return values(apply(forward<F>(f), take(xs, nat<N>)),
-                      apply(forward<G>(g), drop(xs, nat<N>)));
+        return values(
+          apply(std::forward<F>(f), take(xs, nat<N>)),
+          apply(std::forward<G>(g), drop(xs, nat<N>)));
       }
     }; // end of class NSplit
 
@@ -50,16 +52,17 @@ namespace FunctionUtility {
       exec(F&& f, G&& g, Values<Ts...>&& xs)
       {
         return values(
-          apply(forward<F>(f), take(move(xs), nat<N>)),
-          apply(forward<G>(g), take(drop(move(xs), nat<N>), nat<M>)));
+          apply(std::forward<F>(f), take(std::move(xs), nat<N>)),
+          apply(std::forward<G>(g), take(drop(std::move(xs), nat<N>), nat<M>)));
       }
 
       template<typename F, typename G, typename... Ts>
       static constexpr auto
       exec(F&& f, G&& g, const Values<Ts...>& xs)
       {
-        return values(apply(forward<F>(f), take(xs, nat<N>)),
-                      apply(forward<G>(g), take(drop(xs, nat<N>), nat<M>)));
+        return values(
+          apply(std::forward<F>(f), take(xs, nat<N>)),
+          apply(std::forward<G>(g), take(drop(xs, nat<N>), nat<M>)));
       }
     }; // end of class NMSplit
 
@@ -70,16 +73,16 @@ namespace FunctionUtility {
       static constexpr auto
       call(F&& f, Nat<N>, G&& g, Nat<M>)
       {
-        return Composite<NMSplit<N, M>, decay_t<F>, decay_t<G>>(forward<F>(f),
-                                                                forward<G>(g));
+        return Composite<NMSplit<N, M>, decay_t<F>, decay_t<G>>(
+          std::forward<F>(f), std::forward<G>(g));
       }
 
       template<typename F, size_t N, typename G>
       static constexpr auto
       call(F&& f, Nat<N>, G&& g)
       {
-        return Composite<NSplit<N>, decay_t<F>, decay_t<G>>(forward<F>(f),
-                                                            forward<G>(g));
+        return Composite<NSplit<N>, decay_t<F>, decay_t<G>>(
+          std::forward<F>(f), std::forward<G>(g));
       }
 
       template<typename Stream>

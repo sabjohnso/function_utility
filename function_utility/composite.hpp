@@ -32,7 +32,7 @@ namespace FunctionUtility {
 
       template<typename T, typename U>
       constexpr Composite(T&& x, U&& y)
-        : base(forward<T>(x), forward<U>(y))
+        : base(std::forward<T>(x), std::forward<U>(y))
       {}
 
       Composite() {}
@@ -43,7 +43,7 @@ namespace FunctionUtility {
       operator()(Ts&&... xs) const&
       {
         return execution_model::exec(
-          base::first, base::second, values(forward<Ts>(xs)...));
+          base::first, base::second, values(std::forward<Ts>(xs)...));
       }
 
       template<typename... Ts>
@@ -51,7 +51,7 @@ namespace FunctionUtility {
       operator()(Ts&&... xs) &&
       {
         return execution_model::exec(
-          move(base::first), move(base::second), values(forward<Ts>(xs)...));
+          std::move(base::first), std::move(base::second), values(std::forward<Ts>(xs)...));
       }
 
       template<typename Stream>
@@ -79,14 +79,14 @@ namespace FunctionUtility {
       static constexpr auto
       exec(F&& f, G&& g, Values<Ts...>&& xs)
       {
-        return apply(forward<F>(f), values(apply(forward<G>(g), move(xs))));
+        return apply(std::forward<F>(f), values(apply(std::forward<G>(g), std::move(xs))));
       }
 
       template<typename F, typename G, typename... Ts>
       static constexpr auto
       exec(F&& f, G&& g, const Values<Ts...>& xs)
       {
-        return apply(forward<F>(f), values(apply(forward<G>(g), xs)));
+        return apply(std::forward<F>(f), values(apply(std::forward<G>(g), xs)));
       }
 
     }; // end of class After
@@ -98,16 +98,16 @@ namespace FunctionUtility {
       static constexpr auto
       exec(F&& f, G&& g, Values<Ts...>&& xs)
       {
-        return values(apply(forward<F>(f), head(move(xs))),
-                      apply(forward<G>(g), tail(move(xs))));
+        return values(apply(std::forward<F>(f), head(std::move(xs))),
+                      apply(std::forward<G>(g), tail(std::move(xs))));
       }
 
       template<typename F, typename G, typename... Ts>
       static constexpr auto
       exec(F&& f, G&& g, const Values<Ts...>& xs)
       {
-        return values(apply(forward<F>(f), head(xs)),
-                      apply(forward<G>(g), tail(xs)));
+        return values(apply(std::forward<F>(f), head(xs)),
+                      apply(std::forward<G>(g), tail(xs)));
       }
     }; // end of class Split
 
@@ -121,8 +121,8 @@ namespace FunctionUtility {
       static constexpr auto
       exec(F&& f, G&& g, Values<Ts...>&& xs)
       {
-        return apply(apply(forward<F>(f), xs),
-                     values(apply(forward<G>(g), xs)));
+        return apply(apply(std::forward<F>(f), xs),
+                     values(apply(std::forward<G>(g), xs)));
       }
     }; // end of class Generalized
 
@@ -137,7 +137,7 @@ namespace FunctionUtility {
       exec(F&& f, G&& g, Values<Ts...>&& xs)
       {
         return aux(
-          forward<F>(f), forward<G>(g), head(move(xs)), tail(move(xs)));
+          std::forward<F>(f), std::forward<G>(g), head(std::move(xs)), tail(std::move(xs)));
       }
 
     private:
@@ -145,7 +145,7 @@ namespace FunctionUtility {
       static constexpr auto
       aux(F&& f, G&& g, T&& x, Values<Ts...>&& xs)
       {
-        return apply(forward<F>(f)(forward<G>(g)(x)), x, move(xs));
+        return apply(std::forward<F>(f)(std::forward<G>(g)(x)), x, std::move(xs));
       }
     }; // end of class Environmental
 
@@ -159,7 +159,7 @@ namespace FunctionUtility {
       static constexpr auto
       exec(F&& f, T&& x, Values<Ts...>&& xs)
       {
-        return apply(forward<F>(f), values(values(forward<T>(x)), move(xs)));
+        return apply(std::forward<F>(f), values(values(std::forward<T>(x)), std::move(xs)));
       }
 
       Partial() = default;
@@ -176,7 +176,7 @@ namespace FunctionUtility {
       static constexpr auto
       exec(F&& f, T&& x, Values<Ts...>&& xs)
       {
-        return apply(forward<F>(f), values(move(xs), values(forward<T>(x))));
+        return apply(std::forward<F>(f), values(std::move(xs), values(std::forward<T>(x))));
       }
     };
 
@@ -193,16 +193,16 @@ namespace FunctionUtility {
       static constexpr auto
       call(F&& f, G&& g)
       {
-        return Composite<After, decay_t<F>, decay_t<G>>(forward<F>(f),
-                                                        forward<G>(g));
+        return Composite<After, decay_t<F>, decay_t<G>>(std::forward<F>(f),
+                                                        std::forward<G>(g));
       }
 
       template<typename F, typename G, typename H, typename... Is>
       static constexpr auto
       call(F&& f, G&& g, H&& h, Is&&... is)
       {
-        return call(forward<F>(f),
-                    call(forward<G>(g), forward<H>(h), forward<Is>(is)...));
+        return call(std::forward<F>(f),
+                    call(std::forward<G>(g), std::forward<H>(h), std::forward<Is>(is)...));
       }
 
       template<typename Stream>
@@ -228,16 +228,16 @@ namespace FunctionUtility {
       static constexpr auto
       call(F&& f, G&& g)
       {
-        return Composite<Split, decay_t<F>, decay_t<G>>(forward<F>(f),
-                                                        forward<G>(g));
+        return Composite<Split, decay_t<F>, decay_t<G>>(std::forward<F>(f),
+                                                        std::forward<G>(g));
       } // end of function call
 
       template<typename F, typename G, typename H, typename... Is>
       static constexpr auto
       call(F&& f, G&& g, H&& h, Is&&... is)
       {
-        return call(forward<F>(f),
-                    call(forward<G>(g), forward<H>(h), forward<Is>(is)...));
+        return call(std::forward<F>(f),
+                    call(std::forward<G>(g), std::forward<H>(h), std::forward<Is>(is)...));
       } // end of function call
 
       template<typename Stream>
@@ -260,7 +260,7 @@ namespace FunctionUtility {
       static constexpr auto
       exec(F&& f, G&& g, const T& xs)
       {
-        return values(apply(forward<F>(f), xs), apply(forward<G>(g), xs));
+        return values(apply(std::forward<F>(f), xs), apply(std::forward<G>(g), xs));
       }
     }; // end of class Dup
 
@@ -277,16 +277,16 @@ namespace FunctionUtility {
       static constexpr auto
       call(F&& f, G&& g)
       {
-        return Composite<Dup, decay_t<F>, decay_t<G>>(forward<F>(f),
-                                                      forward<G>(g));
+        return Composite<Dup, decay_t<F>, decay_t<G>>(std::forward<F>(f),
+                                                      std::forward<G>(g));
       } // end of function call
 
       template<typename F, typename G, typename H, typename... Is>
       static constexpr auto
       call(F&& f, G&& g, H&& h, Is&&... is)
       {
-        return call(forward<F>(f),
-                    call(forward<G>(g), forward<H>(h), forward<Is>(is)...));
+        return call(std::forward<F>(f),
+                    call(std::forward<G>(g), std::forward<H>(h), std::forward<Is>(is)...));
       } // end of function call
 
       template<typename Stream>
@@ -313,7 +313,7 @@ namespace FunctionUtility {
       constexpr auto
       operator()(F&& f) const&
       {
-        return pcompose(forward<F>(f), identity);
+        return pcompose(std::forward<F>(f), identity);
       }
     } first{}; // end of class First
 
@@ -331,7 +331,7 @@ namespace FunctionUtility {
       static constexpr auto
       call(F&& f)
       {
-        return pcompose(identity, forward<F>(f));
+        return pcompose(identity, std::forward<F>(f));
       }
 
       template<typename Stream>
@@ -362,15 +362,15 @@ namespace FunctionUtility {
       call(F&& f, G&& g)
       {
         using composite_type = Composite<Generalized, decay_t<F>, decay_t<G>>;
-        return composite_type(forward<F>(f), forward<G>(g));
+        return composite_type(std::forward<F>(f), std::forward<G>(g));
       }
 
       template<typename F, typename G, typename H, typename... Is>
       static constexpr auto
       call(F&& f, G&& g, H&& h, Is&&... is)
       {
-        return call(forward<F>(f),
-                    call(forward<G>(g), forward<H>(h), forward<Is>(is)...));
+        return call(std::forward<F>(f),
+                    call(std::forward<G>(g), std::forward<H>(h), std::forward<Is>(is)...));
       }
 
       template<typename Stream>
@@ -390,15 +390,15 @@ namespace FunctionUtility {
       call(F&& f, G&& g)
       {
         using composite_type = Composite<Environmental, decay_t<F>, decay_t<G>>;
-        return composite_type(forward<F>(f), forward<G>(g));
+        return composite_type(std::forward<F>(f), std::forward<G>(g));
       }
 
       template<typename F, typename G, typename H, typename... Hs>
       static constexpr auto
       call(F&& f, G&& g, H&& h, Hs&&... hs)
       {
-        return call(forward<F>(f),
-                    call(forward<G>(g), forward<H>(h), forward<Hs>(hs)...));
+        return call(std::forward<F>(f),
+                    call(std::forward<G>(g), std::forward<H>(h), std::forward<Hs>(hs)...));
       }
     } ecompose{};
 
@@ -412,17 +412,17 @@ namespace FunctionUtility {
       static constexpr auto
       call(F&& f, T&& x)
       {
-        return Composite<Partial, decay_t<F>, decay_t<T>>(forward<F>(f),
-                                                          forward<T>(x));
+        return Composite<Partial, decay_t<F>, decay_t<T>>(std::forward<F>(f),
+                                                          std::forward<T>(x));
       }
 
       template<typename F, typename T, typename U, typename... Vs>
       static constexpr auto
       call(F&& f, T&& x, U&& y, Vs&&... zs)
       {
-        return call(call(forward<F>(f), forward<T>(x)),
-                    forward<U>(y),
-                    forward<Vs>(zs)...);
+        return call(call(std::forward<F>(f), std::forward<T>(x)),
+                    std::forward<U>(y),
+                    std::forward<Vs>(zs)...);
       }
 
       template<typename Stream>
@@ -445,16 +445,16 @@ namespace FunctionUtility {
       static constexpr auto
       call(F&& f, T&& x)
       {
-        return Composite<RightPartial, decay_t<F>, decay_t<T>>(forward<F>(f),
-                                                               forward<T>(x));
+        return Composite<RightPartial, decay_t<F>, decay_t<T>>(std::forward<F>(f),
+                                                               std::forward<T>(x));
       }
 
       template<typename F, typename T, typename U, typename... Vs>
       static constexpr auto
       call(F&& f, T&& x, U&& y, Vs&&... zs)
       {
-        return call(call(forward<F>(f), forward<U>(y), forward<Vs>(zs)...),
-                    forward<T>(x));
+        return call(call(std::forward<F>(f), std::forward<U>(y), std::forward<Vs>(zs)...),
+                    std::forward<T>(x));
       }
 
       template<typename Stream>

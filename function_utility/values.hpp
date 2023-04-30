@@ -50,7 +50,7 @@ namespace FunctionUtility::Core {
       return select_aux(
         TypeUtility::select(types<Ts...>, index_sequence<indices...>()),
         index_sequence<indices...>(),
-        move(xs));
+        std::move(xs));
     }
 
     /**
@@ -82,7 +82,7 @@ namespace FunctionUtility::Core {
     static constexpr auto
     select_aux(Type_sequence<Us...>, index_sequence<indices...>, T&& xs)
     {
-      return Values<Us...>(get<indices>(forward<T>(xs))...);
+      return Values<Us...>(get<indices>(std::forward<T>(xs))...);
 
       static_assert(count_types<Us...>() == count_types<decltype(indices)...>(),
                     "Expected equal number of types and indices");
@@ -96,7 +96,7 @@ namespace FunctionUtility::Core {
     get(Values&& xs)
     {
       using std::get;
-      return get<index>(static_cast<base&&>(move(xs)));
+      return get<index>(static_cast<base&&>(std::move(xs)));
     }
 
     /**
@@ -121,7 +121,7 @@ namespace FunctionUtility::Core {
     static constexpr auto
     apply_aux(index_sequence<indices...>, F&& f, Values&& xs)
     {
-      return forward<F>(f)(get<indices>(move(xs))...);
+      return std::forward<F>(f)(get<indices>(std::move(xs))...);
     }
 
     /**
@@ -134,7 +134,7 @@ namespace FunctionUtility::Core {
     static constexpr auto
     apply_aux(index_sequence<indices...>, F&& f, const Values& xs)
     {
-      return forward<F>(f)(get<indices>(xs)...);
+      return std::forward<F>(f)(get<indices>(xs)...);
     }
 
     /**
@@ -144,7 +144,7 @@ namespace FunctionUtility::Core {
     friend constexpr auto
     apply(F&& f, const Values& xs)
     {
-      return apply_aux(generate_indices<Ts...>(), forward<F>(f), xs);
+      return apply_aux(generate_indices<Ts...>(), std::forward<F>(f), xs);
     }
 
     /**
@@ -154,7 +154,7 @@ namespace FunctionUtility::Core {
     friend constexpr auto
     apply(F&& f, Values&& xs)
     {
-      return apply_aux(generate_indices<Ts...>(), forward<F>(f), move(xs));
+      return apply_aux(generate_indices<Ts...>(), std::forward<F>(f), std::move(xs));
     }
 
     /**
@@ -167,8 +167,8 @@ namespace FunctionUtility::Core {
                Values&& xs,
                Values<Us...>&& ys)
     {
-      return Values<Ts..., Us...>(get<xindicies>(move(xs))...,
-                                  get<yindicies>(move(ys))...);
+      return Values<Ts..., Us...>(get<xindicies>(std::move(xs))...,
+                                  get<yindicies>(std::move(ys))...);
     }
 
     /**
@@ -180,8 +180,8 @@ namespace FunctionUtility::Core {
     {
       return append_aux(generate_indices<Ts...>(),
                         generate_indices<Us...>(),
-                        move(xs),
-                        move(ys));
+                        std::move(xs),
+                        std::move(ys));
     }
 
     /**
@@ -192,7 +192,7 @@ namespace FunctionUtility::Core {
     take(Values&& xs, Nat<N>)
     {
       return select_aux(
-        take(types<Ts...>, nat<N>), generate_indices<N>(), move(xs));
+        take(types<Ts...>, nat<N>), generate_indices<N>(), std::move(xs));
     }
 
     /**
@@ -217,7 +217,7 @@ namespace FunctionUtility::Core {
                     length(drop(generate_indices<Ts...>(), nat<N>)));
       return select_aux(drop(types<Ts...>, nat<N>),
                         drop(generate_indices<Ts...>(), nat<N>),
-                        move(xs));
+                        std::move(xs));
     }
 
     /**
@@ -288,8 +288,8 @@ namespace FunctionUtility::Core {
     {
       return apply_each_aux(types<result_of_t<decay_t<F>(Ts)>...>,
                             generate_indices<Ts...>(),
-                            forward<F>(f),
-                            move(xs));
+                            std::forward<F>(f),
+                            std::move(xs));
     }
 
     /**
@@ -308,7 +308,7 @@ namespace FunctionUtility::Core {
     {
       return apply_each_aux(types<result_of_t<decay_t<F>(Ts)>...>,
                             generate_indices<Ts...>(),
-                            forward<F>(f),
+                            std::forward<F>(f),
                             xs);
     }
 
@@ -327,7 +327,7 @@ namespace FunctionUtility::Core {
                    F&& f,
                    T&& xs)
     {
-      return Values<Us...>(f(get<indices>(forward<T>(xs)))...);
+      return Values<Us...>(f(get<indices>(std::forward<T>(xs)))...);
     }
 
   }; // end of class Values
@@ -348,7 +348,7 @@ namespace FunctionUtility::Core {
   constexpr auto
   values(Values<Ts...>&& xs)
   {
-    return move(xs);
+    return std::move(xs);
   }
 
   /**
@@ -368,7 +368,7 @@ namespace FunctionUtility::Core {
   constexpr auto
   values(T&& x)
   {
-    return Values<decay_t<T>>(forward<T>(x));
+    return Values<decay_t<T>>(std::forward<T>(x));
   }
 
   /**
@@ -378,7 +378,7 @@ namespace FunctionUtility::Core {
   constexpr auto
   values(Values<Ts...>&& xs, Values<Us...>&& ys)
   {
-    return append(move(xs), move(ys));
+    return append(std::move(xs), std::move(ys));
   }
 
   /**
@@ -388,8 +388,8 @@ namespace FunctionUtility::Core {
   constexpr auto
   values(T&& a, U&& b, Vs&&... cs)
   {
-    return values(values(values(forward<T>(a)), values(forward<U>(b))),
-                  values(forward<Vs>(cs))...);
+    return values(values(values(std::forward<T>(a)), values(std::forward<U>(b))),
+                  values(std::forward<Vs>(cs))...);
   }
 
   /**
@@ -409,14 +409,14 @@ namespace FunctionUtility::Core {
   constexpr auto
   head(Values<Ts...>&& xs)
   {
-    return values(get<0>(move(xs)));
+    return values(get<0>(std::move(xs)));
   }
 
   template<size_t index, size_t... indices, typename... Ts>
   constexpr auto
   tail_aux(index_sequence<index, indices...>, Values<Ts...>&& xs)
   {
-    return values(get<indices>(move(xs))...);
+    return values(get<indices>(std::move(xs))...);
   }
 
   /**
@@ -427,7 +427,7 @@ namespace FunctionUtility::Core {
   constexpr auto
   tail(Values<Ts...>&& xs)
   {
-    return tail_aux(generate_indices<Ts...>(), move(xs));
+    return tail_aux(generate_indices<Ts...>(), std::move(xs));
   }
 
   /**
