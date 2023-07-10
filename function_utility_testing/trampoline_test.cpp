@@ -53,6 +53,7 @@ namespace FunctionUtility::Testing
 
     EXPECT_EQ(add(3, 4), 7);
     EXPECT_EQ(add(10000000, 4), 10000004);
+    EXPECT_EQ(add(4, 10000000), 10000004);
   }
 
   TEST(Trampoline, Factorial){

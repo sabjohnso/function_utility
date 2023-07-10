@@ -29,6 +29,8 @@ namespace FunctionUtility::Core {
     mutable mutex mex;
 
   public:
+    Trampoline() = delete;
+
     Trampoline(const_reference value)
       : data(value)
     {}
