@@ -4,12 +4,14 @@
 //
 // ... Standard header files
 //
+#include <utility>
 #include <tuple>
 #include <type_traits>
 #include <utility>
 #include <variant>
 #include <mutex>
 #include <functional>
+#include <memory>
 
 //
 // ... Type Utility header files
@@ -29,6 +31,7 @@ namespace FunctionUtility {
     using std::decay_t;
     using std::is_base_of;
     using std::result_of_t;
+    using std::invoke_result_t;
     using std::tuple;
 
     using std::variant;
@@ -38,6 +41,11 @@ namespace FunctionUtility {
 
     using std::mutex;
     using std::lock_guard;
+
+    using std::unique_ptr;
+    using std::make_unique;
+    using std::shared_ptr;
+    using std::make_shared;
 
     using TypeUtility::CRTP;
     using TypeUtility::generate_indices;

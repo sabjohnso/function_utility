@@ -4,6 +4,7 @@
 //
 // ... Function Utility header files
 //
+#include <function_utility/lazy.hpp>
 #include <function_utility/trampoline.hpp>
 #include <function_utility/composite.hpp>
 #include <function_utility/constant.hpp>
@@ -16,8 +17,11 @@
 #include <function_utility/static_application.hpp>
 #include <function_utility/static_curried.hpp>
 #include <function_utility/values.hpp>
+#include <function_utility/lazy.hpp>
 
 namespace FunctionUtility {
+
+
 
   /** A trampoline for tail calls */
   using Core::Trampoline;
@@ -69,6 +73,10 @@ namespace FunctionUtility {
 
   /** CRTP base class for curried static function call operator */
   using Core::Static_curried;
+
+
+  /** */
+  using Core::lazy;
 
 } // end of namespace FunctionUtility
 
